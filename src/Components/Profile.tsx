@@ -1,5 +1,5 @@
 import React from "react";
-
+import s from "./Profile.module.css"
 export const Profile = () => {
     return (
         <div className='content'>
@@ -12,14 +12,14 @@ export const Profile = () => {
             <div>
                 My posts
             </div>
-            <div>
+            <div >
                 New posts
             </div>
             <div>
-                <div>
+                <div className={s.item}>
                     Post 1
                 </div>
-                <div>
+                <div className={s.item}>
                     Post 2
                 </div>
             </div>
