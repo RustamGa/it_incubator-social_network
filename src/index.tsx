@@ -1,10 +1,12 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import './index.css';
-import reportWebVitals from './reportWebVitals';
-import state from './Redux/State';
-import {rerenderEntireTree} from "./render";
+import App from './App';
+import * as serviceWorker from './serviceWorker';
 
+ReactDOM.render(<App />,  document.getElementById('root'));
 
-rerenderEntireTree(state);
-
-reportWebVitals();
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister();
