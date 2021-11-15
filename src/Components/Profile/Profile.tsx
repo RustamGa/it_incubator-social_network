@@ -3,7 +3,7 @@ import { MyPosts } from "./MyPosts/MyPosts";
 import s from "./Profile.module.css"
 export const Profile = () => {
     return (
-        <div className='content'>
+        <div>
             <div>
                 <img src='https://cdn.ttgtmedia.com/visuals/ComputerWeekly/Hero%20Images/Facebook-social-media-icon-like-adobe.jpeg' />
             </div>
