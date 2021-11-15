@@ -13,10 +13,9 @@ export const MyPosts = () => {
                 New posts
             </div>
             <div>
-                <Post/>
-                <Post/>
-                <Post/>
-                <Post/>
+                <Post message = 'My first post'/>
+                <Post message = 'How are you'/>
+
             </div>
 
         </div>
