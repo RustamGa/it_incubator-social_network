@@ -7,7 +7,6 @@ type MyPostsPropsType = {
     likesCount:number}
 type PostDataPropsType = {
     postData:Array<MyPostsPropsType>
-
 }
 export const MyPosts = (props:PostDataPropsType) => {
 
