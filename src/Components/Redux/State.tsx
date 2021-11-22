@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import {RerenderEntireTree} from "../../Rerende";
 
 export type DialogsPropsType = {
     id: number,
@@ -9,7 +10,7 @@ export type MessagesPropsType = {
     message: string
 }
 export type PostsPropsType = {
-id:number
+    id: number
     message: string
     likesCount: number
 }
@@ -25,8 +26,8 @@ export type StateDataPropsType = {
     dialogsPage: DialogsPagePropsType
     postsPage: PostsPagePropsType
 }
-export type StatePropsType ={
-    state:StateDataPropsType
+export type StatePropsType = {
+    state: StateDataPropsType
 }
 
 export const state: StateDataPropsType = {
@@ -45,27 +46,24 @@ export const state: StateDataPropsType = {
     postsPage: {
         postData: [
             {id: 1, message: 'My first post', likesCount: 2},
-            {id: 2, message: 'Yo', likesCount: 10}
+            {id: 2, message: 'Yo', likesCount: 10},
         ]
     }
 }
-export type AddPostPropsType ={
-    addPost:(postMessage:string) => void
+export type AddPostPropsType = {
+    addPost: (postMessage: string) => void
 }
-export const addPost = (postMessage:string) => {
-debugger
+export const addPost = (postMessage: string) => {
+    debugger
     let newPost: PostsPropsType = {
-        id:5,
-        message:postMessage,
+        id: 3,
+        message: postMessage,
         likesCount: 10
-    }
-    return(
-       state.postsPage.postData.push(newPost)
-   )
-
+    };
+    state.postsPage.postData.push(newPost);
+    RerenderEntireTree(state)
 }
 
-// let[state,setState]=useState( {dialogsPage: {
 //     dialogsData: [
 //         {id: 1, name: 'Amir'},
 //         {id: 2, name: 'Rustam'},

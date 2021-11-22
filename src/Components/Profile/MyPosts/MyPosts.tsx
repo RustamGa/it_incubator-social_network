@@ -13,6 +13,8 @@ export const MyPosts = (props:PostsPagePropsType&AddPostPropsType) => {
     const addPost = () => {
         if (postMessage.current)
         {props.addPost(postMessage.current.value)}
+
+
     }
 
     return (
