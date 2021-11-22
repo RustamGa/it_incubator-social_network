@@ -1,19 +1,20 @@
 import s from "./MyPosts.module.css";
 import React from "react";
 import {Post} from "./Post/Post";
-import { PostsPagePropsType} from "../../Redux/State";
+import {AddPostPropsType, PostsPagePropsType} from "../../Redux/State";
 type newPostsElementType={
     newPostElement:string
 }
 
-export const MyPosts = (props:PostsPagePropsType) => {
+export const MyPosts = (props:PostsPagePropsType&AddPostPropsType) => {
 
     const posts = props.postData.map(p => <Post message={p.message} likesCount={p.likesCount}/>)
-   let newPostElement = React.createRef<HTMLTextAreaElement>();
+   let postMessage = React.createRef<HTMLTextAreaElement>();
     const addPost = () => {
-
-        alert(newPostElement.current?.value)
+        if (postMessage.current)
+        {props.addPost(postMessage.current.value)}
     }
+
     return (
         <div className={s.postsBlock}>
             <div>
@@ -21,7 +22,7 @@ export const MyPosts = (props:PostsPagePropsType) => {
             </div>
             <div>
                 <div>
-                    <textarea ref={newPostElement}></textarea>
+                    <textarea ref={postMessage}></textarea>
                 </div>
                 <div>
                     <button onClick={addPost}>add post</button>
