@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import {RerenderEntireTree} from "../../Rerende";
 
 export type DialogsPropsType = {
     id: number,
@@ -58,6 +57,9 @@ export type AddPostPropsType = {
 export type UpdatePostTextPropsType = {
     updatePostText: (postMessage: string) => void
 }
+let rerenderEntireTree = () => {
+    console.log("yo")
+}
 export const addPost = () => {
     let newPost: PostsPropsType = {
         id: 3,
@@ -66,12 +68,15 @@ export const addPost = () => {
     };
     state.postsPage.postData.push(newPost);
     state.postsPage.newPostMessage=""
-    RerenderEntireTree(state)
+    rerenderEntireTree()
 }
 export const updatePostText = (newPostMessage: string) => {
 
     state.postsPage.newPostMessage=newPostMessage
-    RerenderEntireTree(state)
+    rerenderEntireTree()
+}
+export const subscribe = (observer:()=>void) => {
+    rerenderEntireTree=observer
 }
 
 //     dialogsData: [
