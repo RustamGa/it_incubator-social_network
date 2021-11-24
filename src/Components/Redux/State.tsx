@@ -21,6 +21,7 @@ export type DialogsPagePropsType = {
 }
 export type PostsPagePropsType = {
     postData: Array<PostsPropsType>
+    newPostMessage:string
 }
 export type StateDataPropsType = {
     dialogsPage: DialogsPagePropsType
@@ -47,20 +48,29 @@ export const state: StateDataPropsType = {
         postData: [
             {id: 1, message: 'My first post', likesCount: 2},
             {id: 2, message: 'Yo', likesCount: 10},
-        ]
+        ],
+        newPostMessage: ""
     }
 }
 export type AddPostPropsType = {
-    addPost: (postMessage: string) => void
+    addPost: () => void
 }
-export const addPost = (postMessage: string) => {
-    debugger
+export type UpdatePostTextPropsType = {
+    updatePostText: (postMessage: string) => void
+}
+export const addPost = () => {
     let newPost: PostsPropsType = {
         id: 3,
-        message: postMessage,
+        message:state.postsPage.newPostMessage,
         likesCount: 10
     };
     state.postsPage.postData.push(newPost);
+    state.postsPage.newPostMessage=""
+    RerenderEntireTree(state)
+}
+export const updatePostText = (newPostMessage: string) => {
+
+    state.postsPage.newPostMessage=newPostMessage
     RerenderEntireTree(state)
 }
 
