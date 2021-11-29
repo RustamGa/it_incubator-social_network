@@ -1,5 +1,6 @@
 import React from "react";
 
+
 export type DialogsPropsType = {
     id: number,
     name: string
@@ -26,45 +27,24 @@ export type StateDataPropsType = {
     dialogsPage: DialogsPagePropsType
     postsPage: PostsPagePropsType
 }
-// export type StatePropsType = {
-//     _state: StateDataPropsType
-// }
 export type StoreType = {
     _state: StateDataPropsType
     _rerenderEntireTree: () => void
-    addPost: () => void
-    updatePostText: (newPostMessage: string) => void
     subscribe: (observer: () => void) => void
     getState: () => StateDataPropsType
+    dispatch: (action: ActionType) => void
 }
-export type AddPostPropsType = {
-    addPost: () => void
-}
+export type ActionType = UpdatePostTextActionType | AddPostActionType
 export type UpdatePostTextPropsType = {
     updatePostText: (postMessage: string) => void
 }
-// let rerenderEntireTree = () => {
-//     console.log("yo")
-// }
-// export const addPost = () => {
-//     let newPost: PostsPropsType = {
-//         id: 3,
-//         message: state.postsPage.newPostMessage,
-//         likesCount: 10
-//     };
-//     state.postsPage.postData.push(newPost);
-//     state.postsPage.newPostMessage = ""
-//     rerenderEntireTree()
-// }
-// export const updatePostText = (newPostMessage: string) => {
-//
-//     state.postsPage.newPostMessage = newPostMessage
-//     rerenderEntireTree()
-// }
-// export const subscribe = (observer: () => void) => {
-//     rerenderEntireTree = observer
-// }
-
+type AddPostActionType = {
+    type: 'ADD-POST'
+}
+type UpdatePostTextActionType = {
+    type: 'UPDATE-POST'
+    newPostMessage: string
+}
 export let store: StoreType = {
     _state: {
         dialogsPage: {
@@ -87,26 +67,29 @@ export let store: StoreType = {
             newPostMessage: ""
         }
     },
+
     getState() {
         return this._state
     },
     _rerenderEntireTree() {
         console.log("yo")
     },
-    addPost() {
-        let newPost: PostsPropsType = {
-            id: 3,
-            message: this._state.postsPage.newPostMessage,
-            likesCount: 10
-        };
-        this._state.postsPage.postData.push(newPost);
-        this._state.postsPage.newPostMessage = ""
-        this._rerenderEntireTree()
+    dispatch(action) {
+        if (action.type === "ADD-POST") {
+            let newPost: PostsPropsType = {
+                id: 3,
+                message: this._state.postsPage.newPostMessage,
+                likesCount: 10
+            };
+            this._state.postsPage.postData.push(newPost);
+            this._state.postsPage.newPostMessage = ""
+            this._rerenderEntireTree()
+        } else if (action.type === 'UPDATE-POST') {
+            this._state.postsPage.newPostMessage = action.newPostMessage
+            this._rerenderEntireTree()
+        }
     },
-    updatePostText(newPostMessage: string) {
-        this._state.postsPage.newPostMessage = newPostMessage
-        this._rerenderEntireTree()
-    },
+
     subscribe(observer: () => void) {
         this._rerenderEntireTree = observer
     }

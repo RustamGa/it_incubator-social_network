@@ -1,17 +1,26 @@
 import s from "./MyPosts.module.css";
 import React from "react";
 import {Post} from "./Post/Post";
-import {AddPostPropsType, PostsPagePropsType, UpdatePostTextPropsType} from "../../Redux/State";
-import {ChangeEvent} from "jest-haste-map/build/types";
+import {
+    ActionType,
+
+    PostsPropsType,
+
+} from "../../Redux/State";
+type PropsType={
+    dispatch: (action: ActionType) => void
+    newPostMessage:string
+    postData:Array<PostsPropsType>
+}
 
 
 
-export const MyPosts = (props: PostsPagePropsType & AddPostPropsType&UpdatePostTextPropsType) => {
+export const MyPosts = (props: PropsType) => {
 
-    const posts = props.postData.map(p => <Post message={p.message} likesCount={p.likesCount}/>)
+    const posts = props.postData.map((p: PostsPropsType) => <Post message={p.message} likesCount={p.likesCount}/>)
     const addPost = () => {
-            props.addPost()
-        props.updatePostText("")
+        props.dispatch({type: 'ADD-POST'})
+        props.dispatch({type: 'UPDATE-POST', newPostMessage: ''})
     }
 
     return (
@@ -23,7 +32,7 @@ export const MyPosts = (props: PostsPagePropsType & AddPostPropsType&UpdatePostT
                 <div>
                     <textarea
                         onChange={(e) => {
-                            props.updatePostText(e.currentTarget.value)
+                            props.dispatch({type: 'UPDATE-POST', newPostMessage: e.currentTarget.value})
                         }}
                         value={props.newPostMessage}
                     />
@@ -39,5 +48,4 @@ export const MyPosts = (props: PostsPagePropsType & AddPostPropsType&UpdatePostT
         </div>
     )
 }
-
 
