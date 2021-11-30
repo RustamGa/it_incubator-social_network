@@ -4,25 +4,28 @@ import {Post} from "./Post/Post";
 import {
     ActionType,
 
+    addPostTypeCreator,
+
     PostsPropsType,
+    updateNewPostTextCreator,
 
 } from "../../Redux/State";
-type PropsType={
+import {ChangeEvent} from "jest-haste-map/build/types";
+
+type PropsType = {
     dispatch: (action: ActionType) => void
-    newPostMessage:string
-    postData:Array<PostsPropsType>
+    newPostMessage: string
+    postData: Array<PostsPropsType>
 }
 
 
-
 export const MyPosts = (props: PropsType) => {
-
     const posts = props.postData.map((p: PostsPropsType) => <Post message={p.message} likesCount={p.likesCount}/>)
     const addPost = () => {
-        props.dispatch({type: 'ADD-POST'})
-        props.dispatch({type: 'UPDATE-POST', newPostMessage: ''})
-    }
 
+        props.dispatch(addPostTypeCreator())
+        props.dispatch(updateNewPostTextCreator(""))
+    }
     return (
         <div className={s.postsBlock}>
             <div>
@@ -32,7 +35,7 @@ export const MyPosts = (props: PropsType) => {
                 <div>
                     <textarea
                         onChange={(e) => {
-                            props.dispatch({type: 'UPDATE-POST', newPostMessage: e.currentTarget.value})
+                            props.dispatch(updateNewPostTextCreator(e.currentTarget.value))
                         }}
                         value={props.newPostMessage}
                     />

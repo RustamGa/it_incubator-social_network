@@ -34,17 +34,17 @@ export type StoreType = {
     getState: () => StateDataPropsType
     dispatch: (action: ActionType) => void
 }
-export type ActionType = UpdatePostTextActionType | AddPostActionType
+export type ActionType = ReturnType<typeof addPostTypeCreator> | ReturnType<typeof updateNewPostTextCreator>
 export type UpdatePostTextPropsType = {
     updatePostText: (postMessage: string) => void
 }
-type AddPostActionType = {
+export const addPostTypeCreator = () => ({
     type: 'ADD-POST'
-}
-type UpdatePostTextActionType = {
-    type: 'UPDATE-POST'
-    newPostMessage: string
-}
+} as const)
+export const updateNewPostTextCreator = (text: string) => ({
+    type: 'UPDATE-POST',
+    newPostMessage: text
+} as const)
 export let store: StoreType = {
     _state: {
         dialogsPage: {
