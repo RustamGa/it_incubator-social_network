@@ -1,19 +1,13 @@
-
 import s from "../Dialogs.module.css";
 import React from "react";
-import { MessagesPropsType } from "../../Redux/State";
+import {MessagesPropsType} from "../../Redux/State";
 
 
-export const Messages = (props:MessagesPropsType) => {
-    const newTextMessage = React.createRef<HTMLTextAreaElement>()
-    const addText=()=>{
-        alert(newTextMessage.current?.value)
-    }
+export const Messages = (props: MessagesPropsType) => {
+
     return (
         <div>
-        <div className={s.message}>{props.message}</div>
-            <textarea ref ={newTextMessage}></textarea>
-            <button onClick={addText}>add message</button>
+            <div className={s.message}>{props.message}</div>
         </div>
     )
 }

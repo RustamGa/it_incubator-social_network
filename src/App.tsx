@@ -10,6 +10,7 @@ import {ActionType, StateDataPropsType, StoreType} from "./Components/Redux/Stat
 type PropsType = {
     state: StateDataPropsType
     dispatch: (action: ActionType) => void
+    store: StoreType
 }
 const App = (props: PropsType) => {
     const state = props.state
@@ -18,8 +19,8 @@ const App = (props: PropsType) => {
             <Header/>
             <NavBar/>
             <div className='app-wrapper-content'>
-                <Route path='/dialogs' render={() => <Dialogs dialogsData={state.dialogsPage.dialogsData}
-                                                              messagesData={state.dialogsPage.messagesData}/>}/>
+                <Route path='/dialogs' render={() => <Dialogs store={props.store}
+                />}/>
                 <Route path='/profile' render={() => <Profile
                     newPostMessage={state.postsPage.newPostMessage}
                     postData={state.postsPage.postData}

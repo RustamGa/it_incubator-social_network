@@ -3,14 +3,11 @@ import React from "react";
 import {Post} from "./Post/Post";
 import {
     ActionType,
-
     addPostTypeCreator,
-
     PostsPropsType,
-    updateNewPostTextCreator,
-
+    updateNewPostTexTypeCreator,
 } from "../../Redux/State";
-import {ChangeEvent} from "jest-haste-map/build/types";
+
 
 type PropsType = {
     dispatch: (action: ActionType) => void
@@ -24,7 +21,7 @@ export const MyPosts = (props: PropsType) => {
     const addPost = () => {
 
         props.dispatch(addPostTypeCreator())
-        props.dispatch(updateNewPostTextCreator(""))
+        props.dispatch(updateNewPostTexTypeCreator(""))
     }
     return (
         <div className={s.postsBlock}>
@@ -35,7 +32,7 @@ export const MyPosts = (props: PropsType) => {
                 <div>
                     <textarea
                         onChange={(e) => {
-                            props.dispatch(updateNewPostTextCreator(e.currentTarget.value))
+                            props.dispatch(updateNewPostTexTypeCreator(e.currentTarget.value))
                         }}
                         value={props.newPostMessage}
                     />

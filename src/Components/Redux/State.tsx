@@ -18,6 +18,7 @@ export type PostsPropsType = {
 export type DialogsPagePropsType = {
     dialogsData: Array<DialogsPropsType>
     messagesData: Array<MessagesPropsType>
+    newMessageText: string
 }
 export type PostsPagePropsType = {
     postData: Array<PostsPropsType>
@@ -34,16 +35,29 @@ export type StoreType = {
     getState: () => StateDataPropsType
     dispatch: (action: ActionType) => void
 }
-export type ActionType = ReturnType<typeof addPostTypeCreator> | ReturnType<typeof updateNewPostTextCreator>
+export type ActionType =
+    ReturnType<typeof addPostTypeCreator>
+    | ReturnType<typeof updateNewPostTexTypeCreator>
+    | ReturnType<typeof updateNewDialogsTextTypeCreator>
+    | ReturnType<typeof addDialogsTextTypeCreator>
+
 export type UpdatePostTextPropsType = {
     updatePostText: (postMessage: string) => void
 }
 export const addPostTypeCreator = () => ({
     type: 'ADD-POST'
 } as const)
-export const updateNewPostTextCreator = (text: string) => ({
+export const updateNewPostTexTypeCreator = (text: string) => ({
     type: 'UPDATE-POST',
     newPostMessage: text
+} as const)
+export const updateNewDialogsTextTypeCreator = (text: string) => (
+    {
+        type: 'UPDATE-DIALOGS-TEXT',
+        newMessageText: text
+    } as const)
+export const addDialogsTextTypeCreator = () => ({
+    type: 'ADD-MESSAGE'
 } as const)
 export let store: StoreType = {
     _state: {
@@ -58,6 +72,7 @@ export let store: StoreType = {
                 {id: 2, message: 'How are you'},
                 {id: 3, message: 'I\'m fine'}
             ],
+            newMessageText: ""
         },
         postsPage: {
             postData: [
@@ -86,6 +101,17 @@ export let store: StoreType = {
             this._rerenderEntireTree()
         } else if (action.type === 'UPDATE-POST') {
             this._state.postsPage.newPostMessage = action.newPostMessage
+            this._rerenderEntireTree()
+        } else if (action.type === 'UPDATE-DIALOGS-TEXT') {
+            this._state.dialogsPage.newMessageText = action.newMessageText
+            this._rerenderEntireTree()
+        } else if (action.type === 'ADD-MESSAGE') {
+            let newMessage: MessagesPropsType = {
+                id: 3,
+                message: this._state.dialogsPage.newMessageText,
+            }
+            this._state.dialogsPage.messagesData.push(newMessage)
+            this._state.dialogsPage.newMessageText = ""
             this._rerenderEntireTree()
         }
     },
