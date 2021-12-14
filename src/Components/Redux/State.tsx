@@ -1,4 +1,6 @@
 import React from "react";
+import {addPostTypeCreator, profileReducer, updateNewPostTextTypeCreator} from "./profile-reducer";
+import {addDialogsTextTypeCreator, dialogsReducer, updateNewDialogsTextTypeCreator} from "./dialogs-reducer";
 
 
 export type DialogsPropsType = {
@@ -37,28 +39,11 @@ export type StoreType = {
 }
 export type ActionType =
     ReturnType<typeof addPostTypeCreator>
-    | ReturnType<typeof updateNewPostTexTypeCreator>
+    | ReturnType<typeof updateNewPostTextTypeCreator>
     | ReturnType<typeof updateNewDialogsTextTypeCreator>
     | ReturnType<typeof addDialogsTextTypeCreator>
 
-export type UpdatePostTextPropsType = {
-    updatePostText: (postMessage: string) => void
-}
-export const addPostTypeCreator = () => ({
-    type: 'ADD-POST'
-} as const)
-export const updateNewPostTexTypeCreator = (text: string) => ({
-    type: 'UPDATE-POST',
-    newPostMessage: text
-} as const)
-export const updateNewDialogsTextTypeCreator = (text: string) => (
-    {
-        type: 'UPDATE-DIALOGS-TEXT',
-        newMessageText: text
-    } as const)
-export const addDialogsTextTypeCreator = () => ({
-    type: 'ADD-MESSAGE'
-} as const)
+
 export let store: StoreType = {
     _state: {
         dialogsPage: {
@@ -90,30 +75,11 @@ export let store: StoreType = {
         console.log("yo")
     },
     dispatch(action) {
-        if (action.type === "ADD-POST") {
-            let newPost: PostsPropsType = {
-                id: 3,
-                message: this._state.postsPage.newPostMessage,
-                likesCount: 10
-            };
-            this._state.postsPage.postData.push(newPost);
-            this._state.postsPage.newPostMessage = ""
-            this._rerenderEntireTree()
-        } else if (action.type === 'UPDATE-POST') {
-            this._state.postsPage.newPostMessage = action.newPostMessage
-            this._rerenderEntireTree()
-        } else if (action.type === 'UPDATE-DIALOGS-TEXT') {
-            this._state.dialogsPage.newMessageText = action.newMessageText
-            this._rerenderEntireTree()
-        } else if (action.type === 'ADD-MESSAGE') {
-            let newMessage: MessagesPropsType = {
-                id: 3,
-                message: this._state.dialogsPage.newMessageText,
-            }
-            this._state.dialogsPage.messagesData.push(newMessage)
-            this._state.dialogsPage.newMessageText = ""
-            this._rerenderEntireTree()
-        }
+
+        this._state.postsPage = profileReducer(this._state.postsPage, action)
+        this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action)
+        this._rerenderEntireTree()
+
     },
 
     subscribe(observer: () => void) {

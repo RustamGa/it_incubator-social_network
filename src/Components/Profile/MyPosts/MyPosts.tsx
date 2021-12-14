@@ -3,10 +3,9 @@ import React from "react";
 import {Post} from "./Post/Post";
 import {
     ActionType,
-    addPostTypeCreator,
-    PostsPropsType,
-    updateNewPostTexTypeCreator,
+    PostsPropsType
 } from "../../Redux/State";
+import {addPostTypeCreator, updateNewPostTextTypeCreator} from "../../Redux/profile-reducer";
 
 
 type PropsType = {
@@ -21,7 +20,7 @@ export const MyPosts = (props: PropsType) => {
     const addPost = () => {
 
         props.dispatch(addPostTypeCreator())
-        props.dispatch(updateNewPostTexTypeCreator(""))
+        props.dispatch(updateNewPostTextTypeCreator(""))
     }
     return (
         <div className={s.postsBlock}>
@@ -32,7 +31,7 @@ export const MyPosts = (props: PropsType) => {
                 <div>
                     <textarea
                         onChange={(e) => {
-                            props.dispatch(updateNewPostTexTypeCreator(e.currentTarget.value))
+                            props.dispatch(updateNewPostTextTypeCreator(e.currentTarget.value))
                         }}
                         value={props.newPostMessage}
                     />

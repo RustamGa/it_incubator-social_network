@@ -5,13 +5,9 @@ import s from "./Dialogs.module.css"
 import {Messages} from "./Messages/Messages";
 import {DialogItem} from "./DialogsItem/DialogsItem";
 import {
-    addDialogsTextTypeCreator,
-    DialogsPagePropsType,
-    DialogsPropsType,
-    MessagesPropsType,
     StoreType,
-    updateNewDialogsTextTypeCreator
 } from "../Redux/State";
+import {addDialogsTextTypeCreator, updateNewDialogsTextTypeCreator} from "../Redux/dialogs-reducer";
 
 type PropsType = {
     store: StoreType
