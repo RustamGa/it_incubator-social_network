@@ -5,7 +5,7 @@ import {ProfileInfo} from "./ProfileInfo/ProfileInfo";
 import {
     ActionType,
     PostsPropsType,
-} from "../Redux/State";
+} from "../Redux/Store";
 
 type PropsType = {
     dispatch: (action: ActionType) => void

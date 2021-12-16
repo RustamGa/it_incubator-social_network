@@ -4,7 +4,7 @@ import {Post} from "./Post/Post";
 import {
     ActionType,
     PostsPropsType
-} from "../../Redux/State";
+} from "../../Redux/Store";
 import {addPostTypeCreator, updateNewPostTextTypeCreator} from "../../Redux/profile-reducer";
 
 
@@ -18,7 +18,6 @@ type PropsType = {
 export const MyPosts = (props: PropsType) => {
     const posts = props.postData.map((p: PostsPropsType) => <Post message={p.message} likesCount={p.likesCount}/>)
     const addPost = () => {
-
         props.dispatch(addPostTypeCreator())
         props.dispatch(updateNewPostTextTypeCreator(""))
     }

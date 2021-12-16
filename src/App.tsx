@@ -5,25 +5,26 @@ import {Profile} from "./Components/Profile/Profile";
 import {NavBar} from "./Components/NavBar/NavBar";
 import {Dialogs} from "./Components/Dialogs/Dialogs";
 import {Route} from "react-router";
-import {ActionType, StateDataPropsType, StoreType} from "./Components/Redux/State";
+import {ActionType, StateDataPropsType} from "./Components/Redux/Store";
+import {StoreType} from "./Components/Redux/redux-store";
 
 type PropsType = {
-    state: StateDataPropsType
     dispatch: (action: ActionType) => void
-    store: StoreType
+    state: StoreType
 }
 const App = (props: PropsType) => {
-    const state = props.state
+
     return (
         <div className='app-wrapper'>
             <Header/>
             <NavBar/>
             <div className='app-wrapper-content'>
-                <Route path='/dialogs' render={() => <Dialogs store={props.store}
+                <Route path='/dialogs' render={() => <Dialogs state={props.state}
+                                                              dispatch={props.dispatch}
                 />}/>
                 <Route path='/profile' render={() => <Profile
-                    newPostMessage={state.postsPage.newPostMessage}
-                    postData={state.postsPage.postData}
+                    newPostMessage={props.state.postsPage.newPostMessage}
+                    postData={props.state.postsPage.postData}
                     dispatch={props.dispatch}
                 />}/>
             </div>
