@@ -1,4 +1,4 @@
-import React from "react";
+import React, {ChangeEvent} from "react";
 import s from "./Dialogs.module.css"
 
 
@@ -10,9 +10,11 @@ import {
 import {addDialogsTextTypeCreator, updateNewDialogsTextTypeCreator} from "../Redux/dialogs-reducer";
 import {ActionType} from "../Redux/Store";
 
+;
+
 type PropsType = {
     state: StoreType
-    dispatch:(action: ActionType) => void
+    dispatch: (action: ActionType) => void
 }
 
 export const Dialogs = (props: PropsType) => {
@@ -23,6 +25,12 @@ export const Dialogs = (props: PropsType) => {
         props.dispatch(addDialogsTextTypeCreator())
         props.dispatch(updateNewDialogsTextTypeCreator(""))
     }
+    const onNewMessageChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        const newText = e.currentTarget.value
+        props.dispatch(updateNewDialogsTextTypeCreator(newText))
+    }
+    const newMessageText = props.state.dialogsPage.newMessageText
+
     return (
         <div className={s.dialogs}>
             <div className={s.dialogsItem}>
@@ -33,10 +41,8 @@ export const Dialogs = (props: PropsType) => {
                 <div>
                     <div>
                         <textarea placeholder='enter your message'
-                                  onChange={(e) => {
-                                      props.dispatch(updateNewDialogsTextTypeCreator(e.currentTarget.value))
-                                  }}
-                        value ={props.state.dialogsPage.newMessageText}>
+                                  onChange={onNewMessageChange}
+                                  value={newMessageText}>
                         </textarea>
                     </div>
                     <div>

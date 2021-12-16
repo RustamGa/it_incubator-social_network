@@ -1,5 +1,5 @@
 import s from "./MyPosts.module.css";
-import React from "react";
+import React, {ChangeEvent} from "react";
 import {Post} from "./Post/Post";
 import {
     ActionType,
@@ -21,6 +21,10 @@ export const MyPosts = (props: PropsType) => {
         props.dispatch(addPostTypeCreator())
         props.dispatch(updateNewPostTextTypeCreator(""))
     }
+    const onUpdateNewPostText = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        props.dispatch(updateNewPostTextTypeCreator(e.currentTarget.value))
+    }
+    const newPostMessage = props.newPostMessage
     return (
         <div className={s.postsBlock}>
             <div>
@@ -29,10 +33,8 @@ export const MyPosts = (props: PropsType) => {
             <div>
                 <div>
                     <textarea
-                        onChange={(e) => {
-                            props.dispatch(updateNewPostTextTypeCreator(e.currentTarget.value))
-                        }}
-                        value={props.newPostMessage}
+                        onChange={onUpdateNewPostText}
+                        value={newPostMessage}
                     />
                 </div>
                 <div>
