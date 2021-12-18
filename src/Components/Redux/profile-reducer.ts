@@ -17,7 +17,7 @@ export const profileReducer = (state: PostsPagePropsType=initialState, action: A
                 likesCount: 10
             };
             state.postData.push(newPost);
-            state.newPostMessage = ""
+            state.newPostMessage = "";
             return state;
         case "UPDATE-POST":
             state.newPostMessage = action.newPostMessage
@@ -28,7 +28,9 @@ export const profileReducer = (state: PostsPagePropsType=initialState, action: A
 }
 export const addPostTypeCreator = () => ({
     type: 'ADD-POST'
+
 } as const)
+
 export const updateNewPostTextTypeCreator = (text: string) => ({
     type: 'UPDATE-POST',
     newPostMessage: text

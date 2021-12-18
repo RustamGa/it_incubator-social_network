@@ -19,14 +19,14 @@ export const dialogsReducer = (state: DialogsPagePropsType=initialState, action:
                 id: 3,
                 message: state.newMessageText,
             }
-            state.messagesData.push(newMessage)
-            state.newMessageText = ""
+            state.messagesData.push(newMessage);
+            state.newMessageText = "";
             return state;
         case "UPDATE-DIALOGS-TEXT":
-            state.newMessageText = action.newMessageText
+            state.newMessageText = action.newMessageText;
             return state;
         default:
-            return state
+            return state;
     }
 }
 export const updateNewDialogsTextTypeCreator = (text: string) => (

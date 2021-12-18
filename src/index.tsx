@@ -8,14 +8,14 @@ import {store} from './Components/Redux/redux-store';
 import {BrowserRouter} from "react-router-dom";
 import {StoreType} from "./Components/Redux/redux-store";
 
-export const rerenderEntireTree = (state:StoreType) => {
+export const rerenderEntireTree = (state: StoreType) => {
     return (
-        ReactDOM.render(<BrowserRouter> <App  dispatch={store.dispatch.bind(store)}
-                                             state={state}/></BrowserRouter>, document.getElementById('root')
+        ReactDOM.render(<BrowserRouter> <App store={store}
+            /></BrowserRouter>, document.getElementById('root')
         ))
 }
 rerenderEntireTree(store.getState())
-store.subscribe(()=>{
+store.subscribe(() => {
     let state = store.getState();
     rerenderEntireTree(state);
 })
