@@ -6,14 +6,15 @@ import * as serviceWorker from './serviceWorker';
 import {RootReduxStateType, store} from './Components/Redux/redux-store';
 
 import {BrowserRouter} from "react-router-dom";
+import StoreContext, {Provider} from "./StoreContext";
 
-export const rerenderEntireTree = (state:RootReduxStateType) => {
+export const rerenderEntireTree = (state: RootReduxStateType) => {
     return (
-        ReactDOM.render(<BrowserRouter>
-                <App
-                    state={state}
-                    dispatch={store.dispatch.bind(store)}
-                />
+        ReactDOM.render
+        (<BrowserRouter>
+                <Provider store={store}>
+                    <App/>
+                </Provider>
             </BrowserRouter>,
             document.getElementById('root')
         ))

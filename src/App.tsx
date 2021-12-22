@@ -10,24 +10,21 @@ import {ActionDialogsType} from "./Components/Redux/dialogs-reducer";
 import {ActionsProfileType} from "./Components/Redux/profile-reducer";
 import {DialogsContainer} from "./Components/Dialogs/DialogsContainer";
 
-type PropsType = {
-    state: RootReduxStateType
-    dispatch: (action: ActionDialogsType | ActionsProfileType) => void
-
-}
-const App = (props: PropsType) => {
+// type PropsType = {
+//     state: RootReduxStateType
+//     dispatch: (action: ActionDialogsType | ActionsProfileType) => void
+//
+// }
+const App = () => {
 
     return (
         <div className='app-wrapper'>
             <Header/>
             <NavBar/>
             <div className='app-wrapper-content'>
-                <Route path='/dialogs' render={() => <DialogsContainer state={props.state}
-                                                                       dispatch={props.dispatch}
+                <Route path='/dialogs' render={() => <DialogsContainer
                 />}/>
                 <Route path='/profile' render={() => <Profile
-                    state={props.state}
-                    dispatch={props.dispatch}
                 />}/>
             </div>
         </div>

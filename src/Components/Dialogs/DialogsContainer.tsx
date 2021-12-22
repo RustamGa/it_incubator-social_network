@@ -9,24 +9,35 @@ import {
 } from "../Redux/dialogs-reducer";
 import {ActionsProfileType} from "../Redux/profile-reducer";
 import {Dialogs} from "./Dialogs";
+import StoreContext from "../../StoreContext";
+//
+// type PropsType = {
+//     state: RootReduxStateType
+//     dispatch: (action: ActionDialogsType | ActionsProfileType) => void
+// }
 
-type PropsType = {
-    state: RootReduxStateType
-    dispatch: (action: ActionDialogsType | ActionsProfileType) => void
-}
+export const DialogsContainer = () => {
 
-export const DialogsContainer = (props: PropsType) => {
 
-    const sendMessageClick = () => {
-        props.dispatch(addDialogsTextTypeCreator())
-    }
-    const updateNewDialogsText = (newText: string) => {
-        props.dispatch(updateNewDialogsTextTypeCreator(newText))
-    }
     return (
-        <Dialogs
-            sendMessageClick={sendMessageClick}
-            dialogsPage={props.state.dialogsPage}
-            updateNewDialogsText={updateNewDialogsText}/>
+        <StoreContext.Consumer>
+            {(store)=> {
+
+                let state = store.getState()
+                const sendMessageClick = () => {
+                    store.dispatch(addDialogsTextTypeCreator());
+                }
+                const updateNewDialogsText = (newText: string) => {
+                    store.dispatch(updateNewDialogsTextTypeCreator(newText));
+                }
+                return (
+                <Dialogs
+                    sendMessageClick={sendMessageClick}
+                    dialogsPage={state.dialogsPage}
+                    updateNewDialogsText={updateNewDialogsText}/>
+                )
+            }
+        }
+        </StoreContext.Consumer>
     )
 }

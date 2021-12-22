@@ -7,18 +7,18 @@ import {RootReduxStateType} from "../Redux/redux-store";
 import {ActionDialogsType} from "../Redux/dialogs-reducer";
 import {ActionsProfileType} from "../Redux/profile-reducer";
 
-type PropsType = {
-    state: RootReduxStateType
-    dispatch:(action:ActionDialogsType|ActionsProfileType)=>void
-}
-export const Profile = (props: PropsType) => {
+// type PropsType = {
+//     state: RootReduxStateType
+//     dispatch:(action:ActionDialogsType|ActionsProfileType)=>void
+// }
+export const Profile = () => {
 
     return (
         <div>
             <ProfileInfo/>
             <MyPostsContainer
-                state={props.state}
-                dispatch={props.dispatch}
+                // state={props.state}
+                // dispatch={props.dispatch}
 
             />
         </div>
