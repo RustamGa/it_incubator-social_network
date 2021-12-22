@@ -1,10 +1,15 @@
 import React from "react";
-import {ProfileInfo} from "./ProfileInfo/ProfileInfo";
 import {MyPostsContainer} from "./MyPosts/MyPostsContainer";
-import {StoreType} from "../Redux/redux-store";
+
+import {ProfileInfo} from "./ProfileInfo/ProfileInfo";
+
+import {RootReduxStateType} from "../Redux/redux-store";
+import {ActionDialogsType} from "../Redux/dialogs-reducer";
+import {ActionsProfileType} from "../Redux/profile-reducer";
 
 type PropsType = {
-    store: StoreType
+    state: RootReduxStateType
+    dispatch:(action:ActionDialogsType|ActionsProfileType)=>void
 }
 export const Profile = (props: PropsType) => {
 
@@ -12,7 +17,9 @@ export const Profile = (props: PropsType) => {
         <div>
             <ProfileInfo/>
             <MyPostsContainer
-                store={props.store}
+                state={props.state}
+                dispatch={props.dispatch}
+
             />
         </div>
     )

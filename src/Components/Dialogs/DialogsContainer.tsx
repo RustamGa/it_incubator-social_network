@@ -1,30 +1,32 @@
 import React from "react";
 import {
-    StoreType,
+    RootReduxStateType,
 } from "../Redux/redux-store";
-import {addDialogsTextTypeCreator, updateNewDialogsTextTypeCreator} from "../Redux/dialogs-reducer";
-
+import {
+    ActionDialogsType,
+    addDialogsTextTypeCreator,
+    updateNewDialogsTextTypeCreator
+} from "../Redux/dialogs-reducer";
+import {ActionsProfileType} from "../Redux/profile-reducer";
 import {Dialogs} from "./Dialogs";
 
 type PropsType = {
-    store: StoreType
+    state: RootReduxStateType
+    dispatch: (action: ActionDialogsType | ActionsProfileType) => void
 }
 
 export const DialogsContainer = (props: PropsType) => {
-    const state = props.store.getState().dialogsPage
-    const onSendMessageClick = () => {
-        props.store.dispatch(addDialogsTextTypeCreator())
-        // props.store.dispatch(updateNewDialogsTextTypeCreator(""))
-    }
-    const onNewMessageChange = (newText: string) => {
-        props.store.dispatch(updateNewDialogsTextTypeCreator(newText))
-    }
 
+    const sendMessageClick = () => {
+        props.dispatch(addDialogsTextTypeCreator())
+    }
+    const updateNewDialogsText = (newText: string) => {
+        props.dispatch(updateNewDialogsTextTypeCreator(newText))
+    }
     return (
         <Dialogs
-            updateNewDialogsText={onNewMessageChange}
-            addDialogsText={onSendMessageClick}
-            state={state}
-        />
+            sendMessageClick={sendMessageClick}
+            dialogsPage={props.state.dialogsPage}
+            updateNewDialogsText={updateNewDialogsText}/>
     )
 }

@@ -1,32 +1,24 @@
 import React from "react";
-import {addPostTypeCreator, updateNewPostTextTypeCreator} from "../../Redux/profile-reducer";
+import {ActionsProfileType, addPostTypeCreator, updateNewPostTextTypeCreator} from "../../Redux/profile-reducer";
 import {MyPosts} from "./MyPosts";
-import {StoreType} from "../../Redux/redux-store";
+import {RootReduxStateType} from "../../Redux/redux-store";
+import {ActionDialogsType} from "../../Redux/dialogs-reducer";
+
 
 type PropsType = {
-    store: StoreType
+    state: RootReduxStateType
+    dispatch: (action: ActionDialogsType | ActionsProfileType) => void
 }
 
 export const MyPostsContainer = (props: PropsType) => {
-
-    const state = props.store.getState()
-
     const addPost = () => {
-
-        props.store.dispatch(addPostTypeCreator())
-        // props.store.dispatch(updateNewPostTextTypeCreator(""))
+        props.dispatch(addPostTypeCreator())
     }
-    const onUpdateNewPostText = (newText: string) => {
-
-        props.store.dispatch(updateNewPostTextTypeCreator(newText))
-    }
+    const updateNewPostText = (newText: string) => props.dispatch(updateNewPostTextTypeCreator(newText))
     return (
-        <MyPosts
-            updateNewPostText={(newText) => onUpdateNewPostText(newText)}
-            addPost={addPost}
-            posts={state.postsPage.postData}
-            newPostMessage={state.newPostMessage}
-        />
+        <MyPosts addPost={addPost}
+                 updateNewPostText={updateNewPostText}
+                 newPostMessage={props.state.postsPage.newPostMessage}
+                 postData={props.state.postsPage.postData}/>
     )
 }
-

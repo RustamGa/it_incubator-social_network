@@ -44,46 +44,46 @@ export type ActionType =
     | ReturnType<typeof addDialogsTextTypeCreator>
 
 
-export let store: StoreType = {
-    _state: {
-        dialogsPage: {
-            dialogsData: [
-                {id: 1, name: 'Amir'},
-                {id: 2, name: 'Rustam'},
-                {id: 3, name: 'Sasha'}
-            ],
-            messagesData: [
-                {id: 1, message: 'Hi'},
-                {id: 2, message: 'How are you'},
-                {id: 3, message: 'I\'m fine'}
-            ],
-            newMessageText: ""
-        },
-        postsPage: {
-            postData: [
-                {id: 1, message: 'My first post', likesCount: 2},
-                {id: 2, message: 'Yo', likesCount: 10},
-            ],
-            newPostMessage: ""
-        }
-    },
+// export let store: StoreType = {
+//     _state: {
+//         dialogsPage: {
+//             dialogsData: [
+//                 {id: 1, name: 'Amir'},
+//                 {id: 2, name: 'Rustam'},
+//                 {id: 3, name: 'Sasha'}
+//             ],
+//             messagesData: [
+//                 {id: 1, message: 'Hi'},
+//                 {id: 2, message: 'How are you'},
+//                 {id: 3, message: 'I\'m fine'}
+//             ],
+//             newMessageText: ""
+//         },
+//         postsPage: {
+//             postData: [
+//                 {id: 1, message: 'My first post', likesCount: 2},
+//                 {id: 2, message: 'Yo', likesCount: 10},
+//             ],
+//             newPostMessage: ""
+//         }
+//     },
 
-    getState() {
-        return this._state
-    },
-    _rerenderEntireTree() {
-        console.log("yo")
-    },
-    dispatch(action) {
-
-        this._state.postsPage = profileReducer(this._state.postsPage, action)
-        this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action)
-        this._rerenderEntireTree()
-
-    },
-
-    subscribe(observer: () => void) {
-        this._rerenderEntireTree = observer
-    }
-
-}
+//     getState() {
+//         return this._state
+//     },
+//     _rerenderEntireTree() {
+//         console.log("yo")
+//     },
+//     // dispatch(action) {
+//     //
+//     //     this._state.postsPage = profileReducer(this._state.postsPage, action)
+//     //     this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action)
+//     //     this._rerenderEntireTree()
+//     //
+//     // },
+//
+//     subscribe(observer: () => void) {
+//         this._rerenderEntireTree = observer
+//     }
+//
+// }

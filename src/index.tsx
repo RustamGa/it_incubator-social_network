@@ -3,15 +3,19 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {store} from './Components/Redux/redux-store';
+import {RootReduxStateType, store} from './Components/Redux/redux-store';
 
 import {BrowserRouter} from "react-router-dom";
-import {StoreType} from "./Components/Redux/redux-store";
 
-export const rerenderEntireTree = (state: StoreType) => {
+export const rerenderEntireTree = (state:RootReduxStateType) => {
     return (
-        ReactDOM.render(<BrowserRouter> <App store={store}
-            /></BrowserRouter>, document.getElementById('root')
+        ReactDOM.render(<BrowserRouter>
+                <App
+                    state={state}
+                    dispatch={store.dispatch.bind(store)}
+                />
+            </BrowserRouter>,
+            document.getElementById('root')
         ))
 }
 rerenderEntireTree(store.getState())
