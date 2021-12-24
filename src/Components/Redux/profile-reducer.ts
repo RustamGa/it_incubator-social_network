@@ -1,3 +1,5 @@
+const ADD_POST = 'ADD-POST'
+const UPDATE_POST_TEXT = 'UPDATE-POST-TEXT'
 
 export type PostsType = {
     id: number
@@ -15,9 +17,9 @@ let initialState = {
     ],
     newPostMessage: ""
 }
-export const profileReducer = (state: PostsPageType=initialState, action: ActionsProfileType) => {
+export const profileReducer = (state: PostsPageType = initialState, action: ActionsProfileType) => {
     switch (action.type) {
-        case "ADD-POST":
+        case ADD_POST:
             let newPost: PostsType = {
                 id: 3,
                 message: state.newPostMessage,
@@ -25,19 +27,19 @@ export const profileReducer = (state: PostsPageType=initialState, action: Action
             };
             state.postData.push(newPost);
             state.newPostMessage = ""
-            return state;
-        case "UPDATE-POST":
+            return {...state};
+        case UPDATE_POST_TEXT:
             state.newPostMessage = action.newPostMessage
-            return state;
+            return {...state};
         default:
             return state;
     }
 }
 export const addPostTypeCreator = () => ({
-    type: 'ADD-POST'
+    type: ADD_POST
 } as const)
 export const updateNewPostTextTypeCreator = (text: string) => ({
-    type: 'UPDATE-POST',
+    type: UPDATE_POST_TEXT,
     newPostMessage: text
 } as const)
 

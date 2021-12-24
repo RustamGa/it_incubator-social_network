@@ -3,9 +3,9 @@ import React from "react";
 import {} from "../Dialogs";
 import s from "../Dialogs.module.css"
 import { } from "../../../App";
-import {DialogsPropsType} from "../../Redux/Store";
+import {DialogsType} from "../../Redux/dialogs-reducer";
 
-export const DialogItem = (props: DialogsPropsType) => {
+export const DialogItem = (props: DialogsType) => {
     const path = "/dialogs/" + props.id
     return (
         <div className={`${s.dialogs} ${s.active}`}>
