@@ -16,7 +16,7 @@ export type DialogsPageType = {
     newMessageText: string
 }
 
-let initialState= {
+let initialState = {
     dialogsData: [
         {id: 1, name: 'Amir'},
         {id: 2, name: 'Rustam'},
@@ -29,19 +29,24 @@ let initialState= {
     ],
     newMessageText: ""
 }
-export const dialogsReducer = (state: DialogsPageType=initialState, action: ActionDialogsType):DialogsPageType => {
+export const dialogsReducer = (state: DialogsPageType = initialState, action: ActionDialogsType): DialogsPageType => {
     switch (action.type) {
-        case ADD_MESSAGE:
+        case ADD_MESSAGE: {
             let newMessage: MessagesType = {
                 id: 3,
                 message: state.newMessageText,
             }
-            state.messagesData.push(newMessage)
-            state.newMessageText = ""
-            return {...state};
-        case UPDATE_DIALOGS_TEXT:
-            state.newMessageText = action.newMessageText
-            return {...state};
+            let stateCopy = {...state}
+            stateCopy.messagesData = [...state.messagesData]
+            stateCopy.messagesData.push(newMessage)
+            stateCopy.newMessageText = ""
+            return stateCopy;
+        }
+        case UPDATE_DIALOGS_TEXT: {
+            let stateCopy = {...state}
+            stateCopy.newMessageText = action.newMessageText
+            return stateCopy;
+        }
         default:
             return state
     }
