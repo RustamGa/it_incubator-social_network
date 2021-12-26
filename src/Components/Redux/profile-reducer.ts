@@ -24,17 +24,16 @@ export const profileReducer = (state: PostsPageType = initialState, action: Acti
                 id: 3,
                 message: state.newPostMessage,
                 likesCount: 10
-            };
-            let stateCopy = {...state};
-            stateCopy.postData = [...state.postData];
-            stateCopy.postData.push(newPost);
-            stateCopy.newPostMessage = ""
-            return stateCopy;
+            }
+            return {
+                ...state, postData: [...state.postData, newPost],
+                newPostMessage: ''
+            }
         }
         case UPDATE_POST_TEXT: {
-            let stateCopy = {...state}
-            stateCopy.newPostMessage = action.newPostMessage
-            return stateCopy;
+            return {
+                ...state, newPostMessage: action.newPostMessage
+            }
         }
         default:
             return state;
