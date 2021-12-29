@@ -8,15 +8,16 @@ import {DialogItem} from "./DialogsItem/DialogsItem";
 import {
     DialogsPageType
 } from "../Redux/dialogs-reducer";
+import {DialogsPropsType} from "./DialogsContainer";
 
 
-type PropsType = {
-    sendMessageClick: () => void
-    dialogsPage: DialogsPageType
-    updateNewDialogsText: (newText: string) => void
-}
+// type PropsType = {
+//     sendMessageClick: () => void
+//     dialogsPage: DialogsPageType
+//     updateNewDialogsText: (newText: string) => void
+// }
 
-export const Dialogs = (props: PropsType) => {
+export const Dialogs = (props: DialogsPropsType) => {
 
     const dialogs = props.dialogsPage.dialogsData.map(d => <DialogItem name={d.name} id={d.id}/>)
     const messages = props.dialogsPage.messagesData.map(m => <Messages message={m.message} id={m.id}/>)

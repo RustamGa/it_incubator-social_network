@@ -2,20 +2,21 @@ import s from "./MyPosts.module.css";
 import React, {ChangeEvent} from "react";
 import {Post} from "./Post/Post";
 import {PostsType} from "../../Redux/profile-reducer";
+import {ProfilePropsType} from "./MyPostsContainer";
 
-type PropsType = {
-    addPost: () => void
-    updateNewPostText: (newText: string) => void
-    newPostMessage: string
-    postData: Array<PostsType>
-}
+// type PropsType = {
+//     addPost: () => void
+//     updateNewPostText: (newText: string) => void
+//     newPostMessage: string
+//     postData: Array<PostsType>
+// }
 
-export const MyPosts = (props: PropsType) => {
+export const MyPosts = (props: ProfilePropsType) => {
     const posts = props.postData.map((p) => <Post message={p.message} likesCount={p.likesCount}/>)
     const onAddPost = () => {
         props.addPost()
     }
-    const onUpdateNewPostText = (e:ChangeEvent<HTMLTextAreaElement>) => props.updateNewPostText(e.currentTarget.value)
+    const onUpdateNewPostText = (e: ChangeEvent<HTMLTextAreaElement>) => props.updateNewPostText(e.currentTarget.value)
     return <div className={s.postsBlock}>
         <div>
             My posts

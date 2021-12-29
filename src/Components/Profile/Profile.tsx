@@ -3,9 +3,6 @@ import {MyPostsContainer} from "./MyPosts/MyPostsContainer";
 
 import {ProfileInfo} from "./ProfileInfo/ProfileInfo";
 
-import {RootReduxStateType} from "../Redux/redux-store";
-import {ActionDialogsType} from "../Redux/dialogs-reducer";
-import {ActionsProfileType} from "../Redux/profile-reducer";
 
 // type PropsType = {
 //     state: RootReduxStateType
