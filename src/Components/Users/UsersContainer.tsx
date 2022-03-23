@@ -11,7 +11,8 @@ import {
     UsersPageType,
     UserType
 } from "../Redux/users-reducer";
-import {Users} from "./Users";
+import { Users } from "./UsersC";
+
 
 type MapStatePropsType = {
     usersPage: UsersPageType
