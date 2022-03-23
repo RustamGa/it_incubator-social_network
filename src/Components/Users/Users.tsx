@@ -6,12 +6,16 @@ import axios from "axios";
 
 
 export const Users = (props: UsersPropsType) => {
-    // делаем get запрос на сервер и нам вернуться users и когда сервак ответит нам что-то, мы пишем .then и ответ
-    // прийдет в response и берем пользователей users из response (response.data.items)
-    if (props.usersPage.users.length === 0) {
-        axios.get("https://social-network.samuraijs.com/api/1.0/users").then(response => {
-            props.setUsers(response.data.items)
-        })
+    // создаем функцию getUsers для того чтоб наша функция была чистая и при запуске не было сайд эфектов. Она получает пропсы,
+    // затем сгенирирует разметку, повесился onClick, и уже потом когда функция полностью отработала мы жмем на кнопку
+    // делаем get запрос на сервер и к нам приходят users
+
+        let getUsers = () => {
+            if (props.usersPage.users.length === 0) {
+                axios.get("https://social-network.samuraijs.com/api/1.0/users").then(response => {
+                    props.setUsers(response.data.items)
+                })
+        }
         // props.setUsers([
         //     {
         //         id: 1,
@@ -32,6 +36,9 @@ export const Users = (props: UsersPropsType) => {
         // ])
     }
     return <div>
+        <button onClick={getUsers}>Get users</button>
+
+
         {props.usersPage.users.map((u) => <div key={u.id}>
             <span>
                 <div>
