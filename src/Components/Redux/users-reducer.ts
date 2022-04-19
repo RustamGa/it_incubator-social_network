@@ -3,6 +3,7 @@ const UNFOLLOW = 'UNFOLLOW'
 const SET_USERS = 'SET-USERS'
 const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE'
 const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT'
+const SET_TOGGLE_PRELOADER = 'SET_TOGGLE_PRELOADER'
 
 export type UserType = {
     id: number
@@ -31,6 +32,7 @@ export type UsersPageType = {
     pageSize: number
     totalUsersCount: number
     currentPage: number
+    isFetching: boolean
 }
 
 let initialState: UsersPageType = {
@@ -38,6 +40,7 @@ let initialState: UsersPageType = {
     pageSize: 100,
     totalUsersCount: 0,
     currentPage: 2,
+    isFetching: true,
 }
 
 
@@ -79,10 +82,15 @@ export const usersReducer = (state: UsersPageType = initialState, action: Action
             return {
                 ...state, currentPage: action.currentPage
             }
-            case
-            SET_TOTAL_USERS_COUNT:
+        case
+        SET_TOTAL_USERS_COUNT:
             return {
                 ...state, totalUsersCount: action.usersCount
+            }
+        case
+        SET_TOGGLE_PRELOADER:
+            return {
+                ...state, isFetching:action.isFetching
             }
         default:
             return state;
@@ -110,9 +118,15 @@ export const setTotalUsersCountTypeAC = (usersCount: number) => ({
     usersCount
 } as const)
 
+export const setTogglePreloaderAC = (isFetching: boolean) => ({
+    type: SET_TOGGLE_PRELOADER,
+    isFetching
+} as const)
+
 export type ActionsUsersPageType =
     ReturnType<typeof followTypeAC>
     | ReturnType<typeof unFollowTypeAC>
     | ReturnType<typeof setUsersTypeAC>
     | ReturnType<typeof setCurrentPageTypeAC>
     | ReturnType<typeof setTotalUsersCountTypeAC>
+    | ReturnType<typeof setTogglePreloaderAC>

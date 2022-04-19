@@ -5,7 +5,7 @@ import {
 import {connect, ConnectedProps} from "react-redux";
 import {
     ActionsUsersPageType,
-    followTypeAC, setCurrentPageTypeAC, setTotalUsersCountTypeAC,
+    followTypeAC, setCurrentPageTypeAC, setTogglePreloaderAC, setTotalUsersCountTypeAC,
     setUsersTypeAC,
     unFollowTypeAC,
     UsersPageType,
@@ -13,6 +13,8 @@ import {
 } from "../Redux/users-reducer";
 import axios from "axios";
 import {Users} from "./Users";
+import preloader from '../../assets/imeges/preloader.gif'
+import {Preloader} from "../Coomman/Preloader";
 
 
 type MapStatePropsType = { // тип initial state users
@@ -20,6 +22,7 @@ type MapStatePropsType = { // тип initial state users
     pageSize: number
     totalUsersCount: number
     currentPage: number
+    isFetching: boolean
 
 }
 type MapDispatchPropsType = {
@@ -27,7 +30,8 @@ type MapDispatchPropsType = {
     unFollow: (userID: number) => void
     setUsers: (users: Array<UserType>) => void
     setCurrentPage: (currentPage: number) => void
-    setTotalUsersCount:(usersCount:number)=> void
+    setTotalUsersCount: (usersCount: number) => void
+    setTogglePreloader: (isFetching: boolean) => void
 }
 
 type OwnPropsType = {}
@@ -50,6 +54,7 @@ class UsersContainer extends React.Component<UsersPropsType> {
         // компонента и передаем ей axios запрос
         axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}
         &count=${this.props.pageSize}`).then(response => {
+            this.props.setTogglePreloader(false)
             this.props.setUsers(response.data.items);
             this.props.setTotalUsersCount(response.data.totalCount)
         })
@@ -59,6 +64,7 @@ class UsersContainer extends React.Component<UsersPropsType> {
         this.props.setCurrentPage(pageNumber)
         axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}
         &count=${this.props.pageSize}`).then(response => {
+            this.props.setTogglePreloader(false)
             this.props.setUsers(response.data.items)
         })
     }
@@ -66,11 +72,18 @@ class UsersContainer extends React.Component<UsersPropsType> {
 // каждый класс должен определить метод render потому что react будет требовать от этого объекта получить jsx разметку
 
     render() {
+// презентационная компонента Users
+        return (
+            <>
+                {this.props.isFetching ?
+                   <Preloader/> : null}
 
-        return <Users users={this.props.usersPage} pageSize={this.props.pageSize}
-                      totalUsersCount={this.props.totalUsersCount}
-                      currentPage={this.props.currentPage} follow={this.props.follow}
-                      unFollow={this.props.unFollow} onPageChanged={this.onPageChanged}/>
+                <Users users={this.props.usersPage} pageSize={this.props.pageSize}
+                       totalUsersCount={this.props.totalUsersCount}
+                       currentPage={this.props.currentPage} follow={this.props.follow}
+                       unFollow={this.props.unFollow} onPageChanged={this.onPageChanged}/>
+            </>
+        )
 //
     }
 }
@@ -82,7 +95,7 @@ const mapStateToProps = (state: ReducerType): MapStatePropsType => { // возв
         pageSize: state.usersPage.pageSize,
         totalUsersCount: state.usersPage.totalUsersCount,
         currentPage: state.usersPage.currentPage,
-
+        isFetching: state.usersPage.isFetching
     }
 }
 const mapDispatchToProps = (dispatch: (action: ActionsUsersPageType) => void): MapDispatchPropsType => {
@@ -99,12 +112,16 @@ const mapDispatchToProps = (dispatch: (action: ActionsUsersPageType) => void): M
         setCurrentPage: (currentPage) => {
             dispatch(setCurrentPageTypeAC(currentPage))
         },
-        setTotalUsersCount:(usersCount)=>{
+        setTotalUsersCount: (usersCount) => {
             dispatch(setTotalUsersCountTypeAC(usersCount))
         },
-
+        setTogglePreloader: (isFetching) => {
+            dispatch(setTogglePreloaderAC(isFetching))
+        }
     }
 }
 // const connector = connect(mapStateToProps, mapDispatchToProps)
 // export type PropsFromRedux = ConnectedProps<typeof connector>
+
+// userContainer классовая  контейнерная компонента которую оборачиваем коннектом
 export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer);
