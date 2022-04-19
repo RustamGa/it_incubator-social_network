@@ -4,18 +4,28 @@ const SET_USERS = 'SET-USERS'
 const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE'
 const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT'
 
-
 export type UserType = {
     id: number
-    photos: string
-    followed: boolean
+    photos: {
+        small: string,
+        large: string
+    }
+    followed: boolean,
     name: string
     status: string
-    location: {
-        city: string,
-        country: string
-    }
+    location: { city: string, country: string }
 }
+// export type UserType = {
+//     id: number
+//     photos: string
+//     followed: boolean
+//     name: string
+//     status: string
+//     location: {
+//         city: string,
+//         country: string
+//     }
+// }
 export type UsersPageType = {
     users: Array<UserType>
     pageSize: number
