@@ -5,9 +5,9 @@ import {
 import {connect, ConnectedProps} from "react-redux";
 import {
     ActionsUsersPageType,
-    followTypeAC, setCurrentPageTypeAC, setTogglePreloaderAC, setTotalUsersCountTypeAC,
-    setUsersTypeAC,
-    unFollowTypeAC,
+    follow, setCurrentPage, setTogglePreloader, setTotalUsersCount,
+    setUsers,
+    unFollow,
     UsersPageType,
     UserType
 } from "../Redux/users-reducer";
@@ -64,8 +64,8 @@ class UsersContainer extends React.Component<UsersPropsType> {
         this.props.setCurrentPage(pageNumber)
         axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}
         &count=${this.props.pageSize}`).then(response => {
-            this.props.setTogglePreloader(false)
             this.props.setUsers(response.data.items)
+            this.props.setTogglePreloader(false)
         })
     }
 
@@ -76,7 +76,7 @@ class UsersContainer extends React.Component<UsersPropsType> {
         return (
             <>
                 {this.props.isFetching ?
-                   <Preloader/> : null}
+                    <Preloader/> : null}
 
                 <Users users={this.props.usersPage} pageSize={this.props.pageSize}
                        totalUsersCount={this.props.totalUsersCount}
@@ -98,30 +98,40 @@ const mapStateToProps = (state: ReducerType): MapStatePropsType => { // возв
         isFetching: state.usersPage.isFetching
     }
 }
-const mapDispatchToProps = (dispatch: (action: ActionsUsersPageType) => void): MapDispatchPropsType => {
-    return {
-        follow: (userID: number) => {
-            dispatch(followTypeAC(userID));
-        },
-        unFollow: (userID: number) => {
-            dispatch(unFollowTypeAC(userID));
-        },
-        setUsers: (users: Array<UserType>) => {
-            dispatch(setUsersTypeAC(users));
-        },
-        setCurrentPage: (currentPage) => {
-            dispatch(setCurrentPageTypeAC(currentPage))
-        },
-        setTotalUsersCount: (usersCount) => {
-            dispatch(setTotalUsersCountTypeAC(usersCount))
-        },
-        setTogglePreloader: (isFetching) => {
-            dispatch(setTogglePreloaderAC(isFetching))
-        }
-    }
-}
+
+// const mapDispatchToProps = (dispatch: (action: ActionsUsersPageType) => void): MapDispatchPropsType => {
+//     return {
+//         follow: (userID: number) => {
+//             dispatch(follow(userID));
+//         },
+//         unFollow: (userID: number) => {
+//             dispatch(unFollow(userID));
+//         },
+//         setUsers: (users: Array<UserType>) => {
+//             dispatch(setUsers(users));
+//         },
+//         setCurrentPage: (currentPage) => {
+//             dispatch(setCurrentPage(currentPage))
+//         },
+//         setTotalUsersCount: (usersCount) => {
+//             dispatch(setTotalUsersCount(usersCount))
+//         },
+//         setTogglePreloader: (isFetching) => {
+//             dispatch(setTogglePreloader(isFetching))
+//         }
+//     }
+// }
+
+
 // const connector = connect(mapStateToProps, mapDispatchToProps)
 // export type PropsFromRedux = ConnectedProps<typeof connector>
 
 // userContainer классовая  контейнерная компонента которую оборачиваем коннектом
-export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer);
+export default connect(mapStateToProps, {
+   follow,
+   unFollow,
+    setUsers,
+    setCurrentPage,
+    setTotalUsersCount,
+    setTogglePreloader,
+})(UsersContainer);

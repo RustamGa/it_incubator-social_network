@@ -47,13 +47,15 @@ let initialState: UsersPageType = {
 export const usersReducer = (state: UsersPageType = initialState, action: ActionsUsersPageType): UsersPageType => {
     switch (action.type) {
         case FOLLOW:
+
             return {
                 ...state,
                 users: state.users.map((u) => {
                     if (u.id === action.id) {
                         return {
-                            ...u, followed: false
+                            ...u, followed: true
                         }
+debugger
                     }
                     return u;
                 })
@@ -65,7 +67,7 @@ export const usersReducer = (state: UsersPageType = initialState, action: Action
                 users: state.users.map((u) => {
                         if (u.id === action.id) {
                             return {
-                                ...u, followed: true
+                                ...u, followed: false
                             }
                         }
                         return u;
@@ -97,36 +99,36 @@ export const usersReducer = (state: UsersPageType = initialState, action: Action
 
     }
 }
-export const followTypeAC = (userID: number) => ({
+export const follow = (userID: number) => ({
     type: FOLLOW,
     id: userID
 } as const)
-export const unFollowTypeAC = (userID: number) => ({
+export const unFollow = (userID: number) => ({
     type: UNFOLLOW,
     id: userID
 } as const)
-export const setUsersTypeAC = (users: Array<UserType>) => ({
+export const setUsers = (users: Array<UserType>) => ({
     type: SET_USERS,
     users: users
 } as const)
-export const setCurrentPageTypeAC = (currentPage: number) => ({
+export const setCurrentPage = (currentPage: number) => ({
     type: SET_CURRENT_PAGE,
     currentPage: currentPage
 } as const)
-export const setTotalUsersCountTypeAC = (usersCount: number) => ({
+export const setTotalUsersCount = (usersCount: number) => ({
     type: SET_TOTAL_USERS_COUNT,
     usersCount
 } as const)
 
-export const setTogglePreloaderAC = (isFetching: boolean) => ({
+export const setTogglePreloader = (isFetching: boolean) => ({
     type: SET_TOGGLE_PRELOADER,
     isFetching
 } as const)
 
 export type ActionsUsersPageType =
-    ReturnType<typeof followTypeAC>
-    | ReturnType<typeof unFollowTypeAC>
-    | ReturnType<typeof setUsersTypeAC>
-    | ReturnType<typeof setCurrentPageTypeAC>
-    | ReturnType<typeof setTotalUsersCountTypeAC>
-    | ReturnType<typeof setTogglePreloaderAC>
+    ReturnType<typeof follow>
+    | ReturnType<typeof unFollow>
+    | ReturnType<typeof setUsers>
+    | ReturnType<typeof setCurrentPage>
+    | ReturnType<typeof setTotalUsersCount>
+    | ReturnType<typeof setTogglePreloader>
