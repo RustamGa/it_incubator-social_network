@@ -34,7 +34,6 @@ type MapDispatchPropsType = {
     setTogglePreloader: (isFetching: boolean) => void
 }
 
-type OwnPropsType = {}
 
 export type UsersPropsType = MapStatePropsType & MapDispatchPropsType
 
