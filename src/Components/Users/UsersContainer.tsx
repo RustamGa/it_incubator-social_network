@@ -2,19 +2,16 @@ import React from "react";
 import {
     ReducerType,
 } from "../Redux/redux-store";
-import {connect, ConnectedProps} from "react-redux";
+import {connect} from "react-redux";
 import {
-    ActionsUsersPageType,
     follow, setCurrentPage, setTogglePreloader, setTotalUsersCount,
     setUsers,
     unFollow,
-    UsersPageType,
     UserType
 } from "../Redux/users-reducer";
-import axios from "axios";
 import {Users} from "./Users";
-import preloader from '../../assets/imeges/preloader.gif'
 import {Preloader} from "../Coomman/Preloader";
+import {usersAPI} from "../Api/api";
 
 
 type MapStatePropsType = { // тип initial state users
@@ -51,19 +48,18 @@ class UsersContainer extends React.Component<UsersPropsType> {
 
     componentDidMount() {// метод жизнего цикла компоненты которая вызывается только олин раз когда перересуется
         // компонента и передаем ей axios запрос
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}
-        &count=${this.props.pageSize}`, {withCredentials: true}).then(response => {
+        usersAPI.getUsers(this.props.pageSize, this.props.currentPage).then(data => {
             this.props.setTogglePreloader(false)
-            this.props.setUsers(response.data.items);
-            this.props.setTotalUsersCount(response.data.totalCount)
+            this.props.setUsers(data.items);
+            this.props.setTotalUsersCount(data.totalCount)
         })
     }
 
     onPageChanged = (pageNumber: number) => {
         this.props.setCurrentPage(pageNumber)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}
-        &count=${this.props.pageSize}`, {withCredentials: true}).then(response => {
-            this.props.setUsers(response.data.items)
+        usersAPI.getUsers(this.props.pageSize, pageNumber)
+        .then(data => {
+            this.props.setUsers(data.items)
             this.props.setTogglePreloader(false)
         })
     }
