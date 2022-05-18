@@ -52,7 +52,7 @@ class UsersContainer extends React.Component<UsersPropsType> {
     componentDidMount() {// метод жизнего цикла компоненты которая вызывается только олин раз когда перересуется
         // компонента и передаем ей axios запрос
         axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}
-        &count=${this.props.pageSize}`).then(response => {
+        &count=${this.props.pageSize}`, {withCredentials: true}).then(response => {
             this.props.setTogglePreloader(false)
             this.props.setUsers(response.data.items);
             this.props.setTotalUsersCount(response.data.totalCount)
@@ -62,7 +62,7 @@ class UsersContainer extends React.Component<UsersPropsType> {
     onPageChanged = (pageNumber: number) => {
         this.props.setCurrentPage(pageNumber)
         axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNumber}
-        &count=${this.props.pageSize}`).then(response => {
+        &count=${this.props.pageSize}`, {withCredentials: true}).then(response => {
             this.props.setUsers(response.data.items)
             this.props.setTogglePreloader(false)
         })
@@ -127,8 +127,8 @@ const mapStateToProps = (state: ReducerType): MapStatePropsType => { // возв
 
 // userContainer классовая  контейнерная компонента которую оборачиваем коннектом
 export default connect(mapStateToProps, {
-   follow,
-   unFollow,
+    follow,
+    unFollow,
     setUsers,
     setCurrentPage,
     setTotalUsersCount,
