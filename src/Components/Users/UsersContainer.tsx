@@ -4,7 +4,7 @@ import {
 } from "../Redux/redux-store";
 import {connect} from "react-redux";
 import {
-    follow, setCurrentPage, setTogglePreloader, setTotalUsersCount,
+    follow, setCurrentPage, setFollowingProgress, setTogglePreloader, setTotalUsersCount,
     setUsers,
     unFollow,
     UserType
@@ -20,6 +20,7 @@ type MapStatePropsType = { // тип initial state users
     totalUsersCount: number
     currentPage: number
     isFetching: boolean
+    followingInProgress:Array<number>
 
 }
 type MapDispatchPropsType = {
@@ -29,6 +30,8 @@ type MapDispatchPropsType = {
     setCurrentPage: (currentPage: number) => void
     setTotalUsersCount: (usersCount: number) => void
     setTogglePreloader: (isFetching: boolean) => void
+    setFollowingProgress: (userID:number, isFetching:boolean)=>void
+
 }
 
 
@@ -49,18 +52,20 @@ class UsersContainer extends React.Component<UsersPropsType> {
     componentDidMount() {// метод жизнего цикла компоненты которая вызывается только олин раз когда перересуется
         // компонента и передаем ей axios запрос
         usersAPI.getUsers(this.props.pageSize, this.props.currentPage).then(data => {
-            this.props.setTogglePreloader(false)
             this.props.setUsers(data.items);
-            this.props.setTotalUsersCount(data.totalCount)
+            this.props.setTotalUsersCount(data.totalCount);
+            this.props.setTogglePreloader(false);
+
         })
     }
 
     onPageChanged = (pageNumber: number) => {
-        this.props.setCurrentPage(pageNumber)
+        this.props.setCurrentPage(pageNumber);
+        this.props.setTogglePreloader(true);
         usersAPI.getUsers(this.props.pageSize, pageNumber)
         .then(data => {
-            this.props.setUsers(data.items)
-            this.props.setTogglePreloader(false)
+            this.props.setUsers(data.items);
+            this.props.setTogglePreloader(false);
         })
     }
 
@@ -71,12 +76,14 @@ class UsersContainer extends React.Component<UsersPropsType> {
         return (
             <>
                 {this.props.isFetching ?
-                    <Preloader/> : null}
-
+                    <Preloader/> :
                 <Users users={this.props.usersPage} pageSize={this.props.pageSize}
                        totalUsersCount={this.props.totalUsersCount}
                        currentPage={this.props.currentPage} follow={this.props.follow}
-                       unFollow={this.props.unFollow} onPageChanged={this.onPageChanged}/>
+                       unFollow={this.props.unFollow} onPageChanged={this.onPageChanged}
+                       setFollowingProgress={this.props.setFollowingProgress}
+                       followingInProgress = {this.props.followingInProgress}
+                />}
             </>
         )
 //
@@ -90,7 +97,8 @@ const mapStateToProps = (state: ReducerType): MapStatePropsType => { // возв
         pageSize: state.usersPage.pageSize,
         totalUsersCount: state.usersPage.totalUsersCount,
         currentPage: state.usersPage.currentPage,
-        isFetching: state.usersPage.isFetching
+        isFetching: state.usersPage.isFetching,
+        followingInProgress:state.usersPage.followingInProgress
     }
 }
 
@@ -129,4 +137,5 @@ export default connect(mapStateToProps, {
     setCurrentPage,
     setTotalUsersCount,
     setTogglePreloader,
+    setFollowingProgress
 })(UsersContainer);

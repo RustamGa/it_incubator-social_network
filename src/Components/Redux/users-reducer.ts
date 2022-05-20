@@ -4,6 +4,7 @@ const SET_USERS = 'SET-USERS'
 const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE'
 const SET_TOTAL_USERS_COUNT = 'SET_TOTAL_USERS_COUNT'
 const SET_TOGGLE_PRELOADER = 'SET_TOGGLE_PRELOADER'
+const SET_TOGGLE_FOLLOWING_PROGRESS = 'SET-TOGGLE-FOLLOWING-PROGRESS'
 
 export type UserType = {
     id: number
@@ -11,6 +12,7 @@ export type UserType = {
         small: string,
         large: string
     }
+
     followed: boolean,
     name: string
     status: string
@@ -33,6 +35,7 @@ export type UsersPageType = {
     totalUsersCount: number
     currentPage: number
     isFetching: boolean
+    followingInProgress: Array<number>
 }
 
 let initialState: UsersPageType = {
@@ -41,6 +44,7 @@ let initialState: UsersPageType = {
     totalUsersCount: 0,
     currentPage: 2,
     isFetching: true,
+    followingInProgress: []
 }
 
 
@@ -55,7 +59,6 @@ export const usersReducer = (state: UsersPageType = initialState, action: Action
                         return {
                             ...u, followed: true
                         }
-debugger
                     }
                     return u;
                 })
@@ -92,7 +95,16 @@ debugger
         case
         SET_TOGGLE_PRELOADER:
             return {
-                ...state, isFetching:action.isFetching
+                ...state, isFetching: action.isFetching
+            }
+        case
+        SET_TOGGLE_FOLLOWING_PROGRESS:
+            return {
+                ...state,
+                followingInProgress: action.isFetching
+                    ? [...state.followingInProgress, action.userID]
+                    : state.followingInProgress.filter((id) => id !== action.userID
+                    )
             }
         default:
             return state;
@@ -125,6 +137,12 @@ export const setTogglePreloader = (isFetching: boolean) => ({
     isFetching
 } as const)
 
+export const setFollowingProgress = (userID: number, isFetching: boolean) => ({
+    type: SET_TOGGLE_FOLLOWING_PROGRESS,
+    userID,
+    isFetching
+} as const)
+
 export type ActionsUsersPageType =
     ReturnType<typeof follow>
     | ReturnType<typeof unFollow>
@@ -132,3 +150,4 @@ export type ActionsUsersPageType =
     | ReturnType<typeof setCurrentPage>
     | ReturnType<typeof setTotalUsersCount>
     | ReturnType<typeof setTogglePreloader>
+    | ReturnType<typeof setFollowingProgress>
