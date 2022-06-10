@@ -135,9 +135,9 @@ export const setFollowingProgress = (userID: number, isFetching: boolean) => ({
     isFetching
 } as const)
 
-export const getUsersThunkCreator = (pageSize:number, currentPage:number)=> {
+export const getUsersThunkCreator = (pageSize: number, currentPage: number) => {
 
-    return (dispatch:(action:ActionsUsersPageType)=>void) => {
+    return (dispatch: (action: ActionsUsersPageType) => void) => {
         usersAPI.getUsers(pageSize, currentPage).then(data => {
             dispatch(setUsers(data.items));
             dispatch(setTotalUsersCount(data.totalCount));
@@ -146,32 +146,33 @@ export const getUsersThunkCreator = (pageSize:number, currentPage:number)=> {
     }
 }
 //
-export const followThunkCreator = (userID:number)=> {
-    return (dispatch:(action:ActionsUsersPageType)=>void) => {
+export const followThunkCreator = (userID: number) => {
+    return (dispatch: (action: ActionsUsersPageType) => void) => {
         dispatch(setFollowingProgress(userID, true))
         usersAPI.followUsers(userID)
             .then(data => {
                 if (data.resultCode === 0) {
                     dispatch(follow(userID))
                 }
-                dispatch(setFollowingProgress(userID,false))
+                dispatch(setFollowingProgress(userID, false))
             });
     }
 }
 
-export const unFollowThunkCreator = (userID:number)=> {
-    return (dispatch:(action:ActionsUsersPageType)=>void) => {
+export const unFollowThunkCreator = (userID: number) => {
+    return (dispatch: (action: ActionsUsersPageType) => void) => {
         dispatch(setFollowingProgress(userID, true))
         usersAPI.UnFollowUsers(userID)
             .then(data => {
                 if (data.resultCode === 0) {
                     dispatch(unFollow(userID))
                 }
-               dispatch(setFollowingProgress(userID, false))
+                dispatch(setFollowingProgress(userID, false))
             });
 
     }
 }
+
 
 export type ActionsUsersPageType =
     ReturnType<typeof follow>

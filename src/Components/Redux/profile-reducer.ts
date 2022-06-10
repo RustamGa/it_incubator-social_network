@@ -1,3 +1,4 @@
+import {usersAPI} from "../Api/api";
 const ADD_POST = 'ADD-POST'
 const UPDATE_POST_TEXT = 'UPDATE-POST-TEXT'
 const SET_PROFILE_INFO = 'SET_PROFILE_INFO'
@@ -44,7 +45,7 @@ let initialState: PostsPageType = {
 }
 
 
-export const profileReducer = (state: PostsPageType = initialState, action: ActionsProfileType):PostsPageType => {
+export const profileReducer = (state: PostsPageType = initialState, action: ActionsProfileType): PostsPageType => {
     switch (action.type) {
         case ADD_POST: {
             let newPost: PostsType = {
@@ -64,7 +65,7 @@ export const profileReducer = (state: PostsPageType = initialState, action: Acti
         }
         case SET_PROFILE_INFO: {
             return {
-                ...state, profile:action.profile
+                ...state, profile: action.profile
             }
         }
         default:
@@ -78,10 +79,21 @@ export const updateNewPostTextTypeCreator = (text: string) => ({
     type: UPDATE_POST_TEXT,
     newPostMessage: text
 } as const)
-export const setProfileInfo = (profile:ProfileType) => ({
+export const setProfileInfo = (profile: ProfileType) => ({
     type: SET_PROFILE_INFO,
     profile: profile
 } as const)
+
+
+export const getProfileThunkCreator = (userId: string) => {
+    return (dispatch: (action: ActionsProfileType) => void) => {
+        usersAPI.getProfileInfo(userId)
+            .then(response => {
+                dispatch(setProfileInfo(response.data));
+            })
+
+    }
+}
 
 export type ActionsProfileType =
     ReturnType<typeof addPostTypeCreator>

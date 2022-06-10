@@ -1,3 +1,5 @@
+import {authAPI} from "../Api/api";
+
 const GET_DATA = 'GET_DATA'
 
 
@@ -22,20 +24,29 @@ export const authReducer = (state: AuthDataType = initialState, action: ActionsA
             return {
                 ...state,
                 ...action.data,
-                isAuth:true
+                isAuth: true
             }
         default:
             return state;
 
     }
 }
-export const getData = (id: null | number,
-                        email: null | string,
-                        login: null | string) => ({
+export const getData = (id: null | number, email: null | string, login: null | string) => ({
     type: GET_DATA,
     data: {id, email, login}
 } as const)
 
+export const authThunkCreator = () => {
+    return (dispatch: (action: ActionsAuthType) => void) => {
+        authAPI.authMe().then(response => {
+            if (response.data.resultCode === 0) {
+                let {id, email, login} = response.data.data
+                dispatch(getData(id, email, login))
+            }
+        });
+
+    }
+}
 
 export type ActionsAuthType =
     ReturnType<typeof getData>
