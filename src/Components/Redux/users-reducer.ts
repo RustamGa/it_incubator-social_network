@@ -1,3 +1,5 @@
+import {usersAPI} from "../Api/api";
+
 const FOLLOW = 'FOLLOW'
 const UNFOLLOW = 'UNFOLLOW'
 const SET_USERS = 'SET-USERS'
@@ -18,17 +20,7 @@ export type UserType = {
     status: string
     location: { city: string, country: string }
 }
-// export type UserType = {
-//     id: number
-//     photos: string
-//     followed: boolean
-//     name: string
-//     status: string
-//     location: {
-//         city: string,
-//         country: string
-//     }
-// }
+
 export type UsersPageType = {
     users: Array<UserType>
     pageSize: number
@@ -142,6 +134,44 @@ export const setFollowingProgress = (userID: number, isFetching: boolean) => ({
     userID,
     isFetching
 } as const)
+
+export const getUsersThunkCreator = (pageSize:number, currentPage:number)=> {
+
+    return (dispatch:(action:ActionsUsersPageType)=>void) => {
+        usersAPI.getUsers(pageSize, currentPage).then(data => {
+            dispatch(setUsers(data.items));
+            dispatch(setTotalUsersCount(data.totalCount));
+            dispatch(setTogglePreloader(false));
+        })
+    }
+}
+//
+export const followThunkCreator = (userID:number)=> {
+    return (dispatch:(action:ActionsUsersPageType)=>void) => {
+        dispatch(setFollowingProgress(userID, true))
+        usersAPI.followUsers(userID)
+            .then(data => {
+                if (data.resultCode === 0) {
+                    dispatch(follow(userID))
+                }
+                dispatch(setFollowingProgress(userID,false))
+            });
+    }
+}
+
+export const unFollowThunkCreator = (userID:number)=> {
+    return (dispatch:(action:ActionsUsersPageType)=>void) => {
+        dispatch(setFollowingProgress(userID, true))
+        usersAPI.UnFollowUsers(userID)
+            .then(data => {
+                if (data.resultCode === 0) {
+                    dispatch(unFollow(userID))
+                }
+               dispatch(setFollowingProgress(userID, false))
+            });
+
+    }
+}
 
 export type ActionsUsersPageType =
     ReturnType<typeof follow>

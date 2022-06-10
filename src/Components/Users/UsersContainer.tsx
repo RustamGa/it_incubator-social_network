@@ -4,9 +4,11 @@ import {
 } from "../Redux/redux-store";
 import {connect} from "react-redux";
 import {
-    follow, setCurrentPage, setFollowingProgress, setTogglePreloader, setTotalUsersCount,
-    setUsers,
-    unFollow,
+    followThunkCreator,
+    getUsersThunkCreator,
+    setCurrentPage,
+    setFollowingProgress,
+    unFollowThunkCreator,
     UserType
 } from "../Redux/users-reducer";
 import {Users} from "./Users";
@@ -20,22 +22,20 @@ type MapStatePropsType = { // тип initial state users
     totalUsersCount: number
     currentPage: number
     isFetching: boolean
-    followingInProgress:Array<number>
-
+    followingInProgress: Array<number>
 }
+
 type MapDispatchPropsType = {
-    follow: (userID: number) => void
-    unFollow: (userID: number) => void
-    setUsers: (users: Array<UserType>) => void
+    followThunkCreator: (userID: number) => void
+    unFollowThunkCreator: (userID: number) => void
     setCurrentPage: (currentPage: number) => void
-    setTotalUsersCount: (usersCount: number) => void
-    setTogglePreloader: (isFetching: boolean) => void
-    setFollowingProgress: (userID:number, isFetching:boolean)=>void
+    setFollowingProgress: (userID: number, isFetching: boolean) => void
+    getUsersThunkCreator: (pageSize: number, currentPage: number) => void
 
 }
 
 
-export type UsersPropsType = MapStatePropsType & MapDispatchPropsType
+export type UsersPropsType = MapStatePropsType & MapDispatchPropsType & {}
 
 
 class UsersContainer extends React.Component<UsersPropsType> {
@@ -51,22 +51,11 @@ class UsersContainer extends React.Component<UsersPropsType> {
 
     componentDidMount() {// метод жизнего цикла компоненты которая вызывается только олин раз когда перересуется
         // компонента и передаем ей axios запрос
-        usersAPI.getUsers(this.props.pageSize, this.props.currentPage).then(data => {
-            this.props.setUsers(data.items);
-            this.props.setTotalUsersCount(data.totalCount);
-            this.props.setTogglePreloader(false);
-
-        })
+        this.props.getUsersThunkCreator(this.props.pageSize, this.props.currentPage);
     }
 
     onPageChanged = (pageNumber: number) => {
-        this.props.setCurrentPage(pageNumber);
-        this.props.setTogglePreloader(true);
-        usersAPI.getUsers(this.props.pageSize, pageNumber)
-        .then(data => {
-            this.props.setUsers(data.items);
-            this.props.setTogglePreloader(false);
-        })
+        this.props.getUsersThunkCreator(this.props.pageSize, pageNumber);
     }
 
 // каждый класс должен определить метод render потому что react будет требовать от этого объекта получить jsx разметку
@@ -77,13 +66,17 @@ class UsersContainer extends React.Component<UsersPropsType> {
             <>
                 {this.props.isFetching ?
                     <Preloader/> :
-                <Users users={this.props.usersPage} pageSize={this.props.pageSize}
-                       totalUsersCount={this.props.totalUsersCount}
-                       currentPage={this.props.currentPage} follow={this.props.follow}
-                       unFollow={this.props.unFollow} onPageChanged={this.onPageChanged}
-                       setFollowingProgress={this.props.setFollowingProgress}
-                       followingInProgress = {this.props.followingInProgress}
-                />}
+                    <Users
+                        users={this.props.usersPage}
+                        pageSize={this.props.pageSize}
+                        totalUsersCount={this.props.totalUsersCount}
+                        currentPage={this.props.currentPage}
+                        followThunkCreator={this.props.followThunkCreator}
+                        unFollowThunkCreator={this.props.unFollowThunkCreator}
+                        onPageChanged={this.onPageChanged}
+                        setFollowingProgress={this.props.setFollowingProgress}
+                        followingInProgress={this.props.followingInProgress}
+                    />}
             </>
         )
 //
@@ -98,44 +91,16 @@ const mapStateToProps = (state: ReducerType): MapStatePropsType => { // возв
         totalUsersCount: state.usersPage.totalUsersCount,
         currentPage: state.usersPage.currentPage,
         isFetching: state.usersPage.isFetching,
-        followingInProgress:state.usersPage.followingInProgress
+        followingInProgress: state.usersPage.followingInProgress
     }
 }
 
-// const mapDispatchToProps = (dispatch: (action: ActionsUsersPageType) => void): MapDispatchPropsType => {
-//     return {
-//         follow: (userID: number) => {
-//             dispatch(follow(userID));
-//         },
-//         unFollow: (userID: number) => {
-//             dispatch(unFollow(userID));
-//         },
-//         setUsers: (users: Array<UserType>) => {
-//             dispatch(setUsers(users));
-//         },
-//         setCurrentPage: (currentPage) => {
-//             dispatch(setCurrentPage(currentPage))
-//         },
-//         setTotalUsersCount: (usersCount) => {
-//             dispatch(setTotalUsersCount(usersCount))
-//         },
-//         setTogglePreloader: (isFetching) => {
-//             dispatch(setTogglePreloader(isFetching))
-//         }
-//     }
-// }
-
-
-// const connector = connect(mapStateToProps, mapDispatchToProps)
-// export type PropsFromRedux = ConnectedProps<typeof connector>
 
 // userContainer классовая  контейнерная компонента которую оборачиваем коннектом
 export default connect(mapStateToProps, {
-    follow,
-    unFollow,
-    setUsers,
+    unFollowThunkCreator,
+    followThunkCreator,
     setCurrentPage,
-    setTotalUsersCount,
-    setTogglePreloader,
-    setFollowingProgress
+    setFollowingProgress,
+    getUsersThunkCreator
 })(UsersContainer);
