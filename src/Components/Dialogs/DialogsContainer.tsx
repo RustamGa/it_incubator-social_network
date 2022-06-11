@@ -13,6 +13,7 @@ import {connect} from "react-redux";
 
 type MapStatePropsType = {
     dialogsPage:DialogsPageType
+    isAuth:boolean
 }
 type MapDispatchPropsType = {
     sendMessageClick:()=>void
@@ -22,7 +23,8 @@ type MapDispatchPropsType = {
 export type DialogsPropsType = MapStatePropsType & MapDispatchPropsType
 const mapStateToProps = (state: ReducerType):MapStatePropsType => {
     return {
-        dialogsPage: state.dialogsPage
+        dialogsPage: state.dialogsPage,
+        isAuth:state.auth.isAuth
     }
 }
 const mapDispatchToProps = (dispatch: (action: ActionDialogsType) => void):MapDispatchPropsType => {

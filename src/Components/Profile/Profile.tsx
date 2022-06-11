@@ -9,7 +9,6 @@ type PropsType = {
    profile:ProfileType | null
 }
 export const Profile = (props:PropsType) => {
-
     return (
         <div>
             <ProfileInfo profile={props.profile}/>

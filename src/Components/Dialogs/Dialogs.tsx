@@ -9,6 +9,8 @@ import {
     DialogsPageType
 } from "../Redux/dialogs-reducer";
 import {DialogsPropsType} from "./DialogsContainer";
+import {Login} from "../Login/login";
+import {Redirect} from "react-router";
 
 
 // type PropsType = {
@@ -27,6 +29,7 @@ export const Dialogs = (props: DialogsPropsType) => {
     const onUpdateNewDialogsText = (e: ChangeEvent<HTMLTextAreaElement>) => {
         props.updateNewDialogsText(e.currentTarget.value)
     }
+    if (!props.isAuth) return <Redirect to={"/login"}/>
     return (
         <div className={s.dialogs}>
             <div className={s.dialogsItem}>

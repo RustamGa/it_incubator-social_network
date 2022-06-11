@@ -11,6 +11,7 @@ import {DialogsContainer} from "./Components/Dialogs/DialogsContainer";
 import UsersContainer from "./Components/Users/UsersContainer";
 import ProfileContainer from "./Components/Profile/ProfileContainer";
 import HeaderContainer from "./Components/Header/HeaderContainer";
+import {Login} from "./Components/Login/login";
 
 type PropsType = {}
 
@@ -23,8 +24,9 @@ const App = (props: PropsType) => {
             <div className='app-wrapper-content'>
                 <Route path='/dialogs' render={() => <DialogsContainer/>}/>
                 {/*<Route path='/profile' render={() => <Profile/>}/>*/}
-                <Route path='/profile/:userId' render={() => <ProfileContainer/>}/>
+                <Route path='/profile/:userId?' render={() => <ProfileContainer/>}/>
                 <Route path='/users' render={() => <UsersContainer/>}/>
+                <Route path='/login' render={() => <Login/>}/>
             </div>
         </div>
 
