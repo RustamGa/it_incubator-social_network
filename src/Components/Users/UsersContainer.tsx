@@ -14,6 +14,8 @@ import {
 import {Users} from "./Users";
 import {Preloader} from "../Coomman/Preloader";
 import {usersAPI} from "../Api/api";
+import {compose} from "redux";
+import {withAuthRedirect} from "../../Hoc/WithAuthRedirect";
 
 
 type MapStatePropsType = { // тип initial state users
@@ -95,12 +97,21 @@ const mapStateToProps = (state: ReducerType): MapStatePropsType => { // возв
     }
 }
 
-
-// userContainer классовая  контейнерная компонента которую оборачиваем коннектом
-export default connect(mapStateToProps, {
+export default compose<React.ComponentType>(
+    withAuthRedirect,connect(mapStateToProps, {
     unFollowThunkCreator,
     followThunkCreator,
     setCurrentPage,
     setFollowingProgress,
     getUsersThunkCreator
-})(UsersContainer);
+})) (UsersContainer)
+
+
+// userContainer классовая  контейнерная компонента которую оборачиваем коннектом
+// export default connect(mapStateToProps, {
+//     unFollowThunkCreator,
+//     followThunkCreator,
+//     setCurrentPage,
+//     setFollowingProgress,
+//     getUsersThunkCreator
+// })(UsersContainer);
