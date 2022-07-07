@@ -2,6 +2,8 @@ import React from "react";
 import s from "./ProfileInfo.module.css"
 import {ProfileType} from "../../Redux/profile-reducer";
 import {Preloader} from "../../Coomman/Preloader";
+import { ProfileStatus } from "./ProfileStatus";
+
 
 type ProfileInfoPropsType = {
     profile: ProfileType | null
@@ -12,11 +14,11 @@ export const ProfileInfo = (props: ProfileInfoPropsType) => {
         return <Preloader/>
     return (
         <div>
-            <div>
-                <img
-                    src='https://cdn.ttgtmedia.com/visuals/ComputerWeekly/Hero%20Images/Facebook-social-media-icon-like-adobe.jpeg'
-                />
-            </div>
+            {/*<div>*/}
+            {/*    <img*/}
+            {/*        src='https://cdn.ttgtmedia.com/visuals/ComputerWeekly/Hero%20Images/Facebook-social-media-icon-like-adobe.jpeg'*/}
+            {/*    />*/}
+            {/*</div>*/}
             <div className={s.descriptionBlock}>
                 <div className={s.descriptionBlock}>
                     <img src={props.profile.photos.large}/>
@@ -91,6 +93,7 @@ export const ProfileInfo = (props: ProfileInfoPropsType) => {
                         </div> :
                         null}
                 </div>
+                <ProfileStatus/>
             </div>
         </div>
     )
