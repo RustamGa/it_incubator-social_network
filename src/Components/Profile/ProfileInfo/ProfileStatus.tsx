@@ -1,6 +1,6 @@
 import React, {ChangeEvent} from "react";
 import s from "./ProfileInfo.module.css"
-import {ProfileType} from "../../Redux/profile-reducer";
+import {PostsPageType, ProfileType} from "../../Redux/profile-reducer";
 import {Preloader} from "../../Coomman/Preloader";
 
 
@@ -8,8 +8,12 @@ type ProfileStatusPropsType = {
     status:string
     upDateProfileStatusThunkCreator:(status:string) => void
 }
+type ProfileStatusStateType = {
+    editMode: boolean
+    status: string
+}
 
-export class ProfileStatus extends React.Component <ProfileStatusPropsType>{
+export class ProfileStatus extends React.Component <ProfileStatusPropsType, ProfileStatusStateType>{
 
     state = {
         editMode: false,
@@ -33,6 +37,14 @@ export class ProfileStatus extends React.Component <ProfileStatusPropsType>{
            status:e.currentTarget.value
        })
     }
+     componentDidUpdate(prevProps: Readonly<ProfileStatusPropsType>, prevState: Readonly<ProfileStatusStateType>) { // не уверен в правильности типизации Readonly
+             if (prevProps.status!==this.props.status){
+                 this.setState({
+                     status:this.props.status
+                 })
+             }
+     }
+
     render() {
         return (
             this.state.editMode
