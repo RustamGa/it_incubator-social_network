@@ -3,7 +3,7 @@ import {
     ActionsProfileType,
     addPostTypeCreator,
     PostsType,
-    updateNewPostTextTypeCreator
+    updateNewPostTextAC
 } from "../../Redux/profile-reducer";
 import {MyPosts} from "./MyPosts";
 import {ReducerType} from "../../Redux/redux-store";
@@ -30,7 +30,7 @@ const mapStateToProps = (state: ReducerType): MapStateToPropsType => {
 const mapDispatchToProps = (dispatch: (actions: ActionsProfileType) => void):MapDispatchToPropsType => {
     return {
         updateNewPostText: (newText: string) => {
-            dispatch(updateNewPostTextTypeCreator(newText));
+            dispatch(updateNewPostTextAC(newText));
         },
         addPost: () => {
             dispatch(addPostTypeCreator());

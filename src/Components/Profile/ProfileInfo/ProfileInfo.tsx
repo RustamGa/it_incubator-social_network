@@ -7,6 +7,8 @@ import { ProfileStatus } from "./ProfileStatus";
 
 type ProfileInfoPropsType = {
     profile: ProfileType | null
+    status:string
+    upDateProfileStatusThunkCreator: (status:string)=> void
 }
 
 export const ProfileInfo = (props: ProfileInfoPropsType) => {
@@ -93,7 +95,9 @@ export const ProfileInfo = (props: ProfileInfoPropsType) => {
                         </div> :
                         null}
                 </div>
-                <ProfileStatus/>
+                <ProfileStatus status={props.status}
+                               upDateProfileStatusThunkCreator={props.upDateProfileStatusThunkCreator}
+                />
             </div>
         </div>
     )

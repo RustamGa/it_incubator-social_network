@@ -6,12 +6,16 @@ import {ProfileType} from "../Redux/profile-reducer";
 
 
 type PropsType = {
-   profile:ProfileType | null
+    profile: ProfileType | null
+    status: string
+    upDateProfileStatusThunkCreator: (status: string) => void
 }
-export const Profile = (props:PropsType) => {
+export const Profile = (props: PropsType) => {
     return (
         <div>
-            <ProfileInfo profile={props.profile}/>
+            <ProfileInfo profile={props.profile} status={props.status}
+                         upDateProfileStatusThunkCreator={props.upDateProfileStatusThunkCreator}
+            />
             <MyPostsContainer
                 // state={props.state}
                 // dispatch={props.dispatch}
