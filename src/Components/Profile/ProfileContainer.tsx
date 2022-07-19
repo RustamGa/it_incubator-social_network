@@ -10,7 +10,6 @@ import {
 } from "../Redux/profile-reducer";
 import {withRouter} from "react-router-dom";
 import {RouteComponentProps} from "react-router/ts4.0";
-import {Redirect} from "react-router";
 import {withAuthRedirect} from "../../Hoc/WithAuthRedirect";
 import {compose} from "redux";
 
