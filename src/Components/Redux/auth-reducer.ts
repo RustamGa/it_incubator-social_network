@@ -1,6 +1,7 @@
 import {authAPI} from "../Api/api";
 
-const GET_DATA = 'GET_DATA'
+const GET_DATA = 'GET-DATA'
+const SET_LOGIN = 'SET-LOGIN'
 
 
 export type AuthDataType = {
@@ -26,6 +27,11 @@ export const authReducer = (state: AuthDataType = initialState, action: ActionsA
                 ...action.data,
                 isAuth: true
             }
+
+        case SET_LOGIN:
+            return {
+                ...state
+            }
         default:
             return state;
 
@@ -34,6 +40,11 @@ export const authReducer = (state: AuthDataType = initialState, action: ActionsA
 export const getData = (id: null | number, email: null | string, login: null | string) => ({
     type: GET_DATA,
     data: {id, email, login}
+} as const)
+
+export const setLogin = (email:string, password:string, rememberMe:boolean) => ({
+    type: SET_LOGIN,
+    data: {email,password, rememberMe }
 } as const)
 
 export const authThunkCreator = () => {
@@ -47,6 +58,19 @@ export const authThunkCreator = () => {
 
     }
 }
+export const loginThunkCreator = (email:string, password:string, rememberMe:boolean, captcha:boolean) =>{
+    return (dispatch: (action: ActionsAuthType) => void) => {
+        authAPI.loginMe(email, password, rememberMe).then(response => {
+            if (response.data.resultCode === 0) {
+                let {email, password, rememberMe} = response.data.data
+                dispatch(getData( email, password, rememberMe))
+            }
+        });
+    }
+}
 
 export type ActionsAuthType =
-    ReturnType<typeof getData>
+    ReturnType<typeof getData>|
+    ReturnType<typeof setLogin>
+
+

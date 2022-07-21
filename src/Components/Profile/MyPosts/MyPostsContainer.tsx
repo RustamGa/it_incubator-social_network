@@ -2,38 +2,30 @@ import React from "react";
 import {
     ActionsProfileType,
     addPostTypeCreator,
-    PostsType,
-    updateNewPostTextAC
+    PostsType
 } from "../../Redux/profile-reducer";
 import {MyPosts} from "./MyPosts";
 import {ReducerType} from "../../Redux/redux-store";
-import {ActionDialogsType} from "../../Redux/dialogs-reducer";
 import {connect} from "react-redux";
 
 type MapStateToPropsType = {
     postData: Array<PostsType>
-    newPostMessage: string
 }
 type MapDispatchToPropsType = {
-    updateNewPostText: (newText: string) => void
-    addPost: () => void
+    addPost: (postMessage:string) => void
 }
 export type ProfilePropsType= MapStateToPropsType & MapDispatchToPropsType
 
 
 const mapStateToProps = (state: ReducerType): MapStateToPropsType => {
     return {
-        postData: state.postsPage.postData,
-        newPostMessage: state.postsPage.newPostMessage
+        postData: state.postsPage.postData
     }
 }
 const mapDispatchToProps = (dispatch: (actions: ActionsProfileType) => void):MapDispatchToPropsType => {
     return {
-        updateNewPostText: (newText: string) => {
-            dispatch(updateNewPostTextAC(newText));
-        },
-        addPost: () => {
-            dispatch(addPostTypeCreator());
+        addPost: (postMessage) => {
+            dispatch(addPostTypeCreator(postMessage));
         }
     }
 

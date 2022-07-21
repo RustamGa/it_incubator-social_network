@@ -4,42 +4,34 @@ import {
 } from "../Redux/redux-store";
 import {
     ActionDialogsType,
-    addDialogsTextTypeCreator, DialogsPageType,
-    updateNewDialogsTextTypeCreator
+    addDialogsTextTypeCreator, DialogsPageType
 } from "../Redux/dialogs-reducer";
-import {ActionsProfileType} from "../Redux/profile-reducer";
 import {Dialogs} from "./Dialogs";
 import {connect} from "react-redux";
-import {Redirect} from "react-router";
 import {withAuthRedirect} from "../../Hoc/WithAuthRedirect";
 import {compose} from "redux";
 
 type MapStatePropsType = {
-    dialogsPage:DialogsPageType
+    dialogsPage: DialogsPageType
 }
 type MapDispatchPropsType = {
-    sendMessageClick:()=>void
-    updateNewDialogsText: (newText:string) => void
+    sendMessageClick: (message: string) => void
 }
 
 export type DialogsPropsType = MapStatePropsType & MapDispatchPropsType
 
-const mapStateToProps = (state: ReducerType):MapStatePropsType => {
+const mapStateToProps = (state: ReducerType): MapStatePropsType => {
     return {
         dialogsPage: state.dialogsPage,
     }
 }
-const mapDispatchToProps = (dispatch: (action: ActionDialogsType) => void):MapDispatchPropsType => {
+const mapDispatchToProps = (dispatch: (action: ActionDialogsType) => void): MapDispatchPropsType => {
     return {
-        sendMessageClick: () => {
-            dispatch(addDialogsTextTypeCreator());
+        sendMessageClick: (message) => {
+            dispatch(addDialogsTextTypeCreator(message));
         },
-        updateNewDialogsText: (newText: string) => {
-            dispatch(updateNewDialogsTextTypeCreator(newText));
-        }
     }
 }
-// let AuthRedirectComponent = withAuthRedirect(Dialogs)
 compose(connect(mapStateToProps, mapDispatchToProps), withAuthRedirect)(Dialogs) // функция compose с помощью
 // которой мы можем целевую компоненту передавать в другие функции оброботчики HOC по цепочке избавляясь от лишеного кода
 

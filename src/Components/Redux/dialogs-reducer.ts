@@ -1,5 +1,5 @@
 const ADD_MESSAGE = 'ADD-MESSAGE'
-const UPDATE_DIALOGS_TEXT = 'UPDATE-DIALOGS-TEXT'
+// const UPDATE_DIALOGS_TEXT = 'UPDATE-DIALOGS-TEXT'
 
 export type DialogsType = {
     id: number,
@@ -13,7 +13,6 @@ export type MessagesType = {
 export type DialogsPageType = {
     dialogsData: Array<DialogsType>
     messagesData: Array<MessagesType>
-    newMessageText: string
 }
 
 let initialState = {
@@ -26,8 +25,7 @@ let initialState = {
         {id: 1, message: 'Hi'},
         {id: 2, message: 'How are you'},
         {id: 3, message: 'I\'m fine'}
-    ],
-    newMessageText: ""
+    ]
 }
 export const dialogsReducer = (state: DialogsPageType = initialState, action: ActionDialogsType): DialogsPageType => {
     // let stateCopy = {
@@ -38,31 +36,31 @@ export const dialogsReducer = (state: DialogsPageType = initialState, action: Ac
         case ADD_MESSAGE: {
             let newMessage: MessagesType = {
                 id: 3,
-                message: state.newMessageText,
+                message: action.message,  // message прийдет из action
             }
             return {
-                ...state, messagesData: [...state.messagesData, newMessage],
-                newMessageText: ""
+                ...state, messagesData: [...state.messagesData, newMessage]
             }
         }
-        case UPDATE_DIALOGS_TEXT: {
-            return {
-                ...state, newMessageText: action.newMessageText
-            }
-        }
+        // case UPDATE_DIALOGS_TEXT: {
+        //     return {
+        //         ...state, newMessageText: action.newMessageText
+        //     }
+        // }
         default:
             return state
     }
 }
-export const updateNewDialogsTextTypeCreator = (text: string) => (
-    {
-        type: UPDATE_DIALOGS_TEXT,
-        newMessageText: text
-    } as const)
-export const addDialogsTextTypeCreator = () => ({
-    type: ADD_MESSAGE
+// export const updateNewDialogsTextTypeCreator = (text: string) => (
+//     {
+//         type: UPDATE_DIALOGS_TEXT,
+//         newMessageText: text
+//     } as const)
+export const addDialogsTextTypeCreator = (message:string) => ({
+    type: ADD_MESSAGE,
+    message:message
 } as const)
 
 export type ActionDialogsType =
-    ReturnType<typeof updateNewDialogsTextTypeCreator>
-    | ReturnType<typeof addDialogsTextTypeCreator>
+    // ReturnType<typeof updateNewDialogsTextTypeCreator>
+    ReturnType<typeof addDialogsTextTypeCreator>
