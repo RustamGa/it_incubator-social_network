@@ -1,5 +1,5 @@
 import React from "react";
-import {authThunkCreator} from "../Redux/auth-reducer";
+import {authThunkCreator, loginThunkCreator} from "../Redux/auth-reducer";
 
 import {connect} from "react-redux";
 import {ReducerType} from "../Redux/redux-store";
@@ -12,19 +12,20 @@ type MapStatePropsType = { // тип initial state users
 
 type MapDispatchPropsType = {
     authThunkCreator: () => void
+    loginThunkCreator: (email: string, password: string, rememberMe: boolean) => void
 }
 export type AuthPropsType = MapStatePropsType & MapDispatchPropsType
 
 
 class LoginContainer extends React.Component<AuthPropsType> {
-    componentDidMount() {// метод жизнего цикла компоненты которая вызывается только олин раз когда перересуется
+    componentDidMount() {// метод жизнего цикла компоненты которая вызывается только один раз когда перерисуется
         // компонента и передаем ей axios запрос
         // this.props.authThunkCreator()
     }
 
     render() {
         return (
-            <Login/>
+            <Login loginThunkCreator={this.props.loginThunkCreator} isAuth={this.props.isAuth}/>
         )
     }
 }
@@ -37,5 +38,5 @@ const mapStateToProps = (state: ReducerType): MapStatePropsType => { // возв
     }
 }
 export default connect(mapStateToProps, {
-    authThunkCreator,
+    authThunkCreator,loginThunkCreator
 })(LoginContainer);

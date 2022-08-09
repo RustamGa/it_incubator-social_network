@@ -1,5 +1,5 @@
 import React from "react";
-import {authThunkCreator} from "../Redux/auth-reducer";
+import {authThunkCreator, loginOutThunkCreator} from "../Redux/auth-reducer";
 import {Header} from "./Header";
 import {connect} from "react-redux";
 import {ReducerType} from "../Redux/redux-store";
@@ -10,6 +10,7 @@ type MapStatePropsType = { // тип initial state users
 }
 type MapDispatchPropsType = {
     authThunkCreator: () => void
+    loginOutThunkCreator:() => void
 }
 export type AuthPropsType = MapStatePropsType & MapDispatchPropsType
 
@@ -35,5 +36,5 @@ const mapStateToProps = (state: ReducerType): MapStatePropsType => { // возв
     }
 }
 export default connect(mapStateToProps, {
-    authThunkCreator,
+    authThunkCreator, loginOutThunkCreator
 })(HeaderContainer);
