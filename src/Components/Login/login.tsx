@@ -3,6 +3,7 @@ import {Field, InjectedFormProps, reduxForm} from "redux-form";
 import {Input} from '../Coomman/FormsControls/FormsControls';
 import {required} from "../../Validators/Validators";
 import {Redirect} from "react-router";
+import style from "./../Coomman/FormsControls/FormControl.module.css"
 
 
 type FormDataType = {
@@ -14,6 +15,7 @@ type FormDataType = {
 export const LoginForm = (props: InjectedFormProps<FormDataType>) => {
     return <form onSubmit={props.handleSubmit}>  {/*handleSubmit это функция callback которая нам дает редакс форма которую мы должны повесить на событие формы onSubmit,
     у любой формы есть событие onSubmit*/}
+
         <div>
             <Field placeholder={'Email'} name={"email"} component={Input} validate={[required]}/> {/*Field это специальная компонента из библиотеки редакc форм
             как контейнерная компонента которая рисует другую компоненту input передает свои пропсы прокидывает дальше своему детю инпут */}
@@ -24,8 +26,12 @@ export const LoginForm = (props: InjectedFormProps<FormDataType>) => {
         <div>
             <Field type={'checkbox'} name={"rememberMe"} component={Input} validate={[required]}/>Remember me
         </div>
+        {console.log(props.error)}
+        {props.error&&<div className={style.formSummaryError}>
+            {props.error}
+        </div>}
         <div>
-            <button> Login</button>
+            <button>Login</button>
         </div>
     </form>
 }

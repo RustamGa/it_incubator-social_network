@@ -17,26 +17,32 @@ import {compose} from "redux";
 type MapStatePropsType = { // тип initial state users
     profile: ProfileType | null
     status: string
+    authorizedUserId: string | null
 }
 type MapDispatchPropsType = {
-    getProfileThunkCreator: (userId: string) => void
-    getProfileStatusThunkCreator: (userId: string) => void
+    getProfileThunkCreator: (userId: string ) => void
+    getProfileStatusThunkCreator: (userId: string ) => void
     upDateProfileStatusThunkCreator: (status: string) => void
 }
+
 type PropsType = MapStatePropsType & MapDispatchPropsType
 
 type PathParamsType = {
-    userId: string,
+    userId: string
 }
+
+
 type ProfileContainerPropsType = RouteComponentProps<PathParamsType> & PropsType
 
 class ProfileContainer extends React.Component<ProfileContainerPropsType> {
 
     componentDidMount() {
+        debugger
         let userId = this.props.match.params.userId;
         if (!userId) {
-            userId = '21256'
+            userId = this.props.authorizedUserId as string // не могу понять почему ругается на тип, поставил утверждение типа
         }
+
         this.props.getProfileThunkCreator(userId)
         this.props.getProfileStatusThunkCreator(userId)
     }
@@ -61,8 +67,8 @@ const mapStateToProps = (state: ReducerType): MapStatePropsType => { // возв
     // которую мы достаем из reducer
     return {
         profile: state.postsPage.profile,
-        status: state.postsPage.status
-
+        status: state.postsPage.status,
+        authorizedUserId:state.auth.id
     }
 }
 

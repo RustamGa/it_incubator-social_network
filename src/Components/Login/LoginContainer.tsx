@@ -38,5 +38,5 @@ const mapStateToProps = (state: ReducerType): MapStatePropsType => { // возв
     }
 }
 export default connect(mapStateToProps, {
-    authThunkCreator,loginThunkCreator
+    authThunkCreator, loginThunkCreator
 })(LoginContainer);

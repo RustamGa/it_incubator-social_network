@@ -4,14 +4,9 @@ import {Header} from "./Components/Header/Header";
 import {Profile} from "./Components/Profile/Profile";
 import {NavBar} from "./Components/NavBar/NavBar";
 import {Route} from "react-router";
-
-import {ActionDialogsType} from "./Components/Redux/dialogs-reducer";
-import {ActionsProfileType} from "./Components/Redux/profile-reducer";
-
 import UsersContainer from "./Components/Users/UsersContainer";
 import ProfileContainer from "./Components/Profile/ProfileContainer";
 import HeaderContainer from "./Components/Header/HeaderContainer";
-import {Login} from "./Components/Login/login";
 import DialogsContainer from "./Components/Dialogs/DialogsContainer";
 import LoginContainer from "./Components/Login/LoginContainer";
 

@@ -1,13 +1,14 @@
 import {authAPI} from "../Api/api";
 import {ThunkDispatch} from "redux-thunk";
 import {ReducerType} from "./redux-store";
+import {FormAction, stopSubmit} from "redux-form";
 
 const SET_USER_DATA = 'SET-USER-DATA'
 const SET_LOGIN = 'SET-LOGIN'
 
 
 export type AuthDataType = {
-    id: number | null
+    id: string | null
     email: string | null
     login: string | null
     isAuth: boolean
@@ -24,6 +25,7 @@ let initialState: AuthDataType = {
 export const authReducer = (state: AuthDataType = initialState, action: ActionsAuthType): AuthDataType => {
     switch (action.type) {
         case SET_USER_DATA:
+            console.log(action)
             return {
                 ...state,
                 ...action.data,
@@ -38,7 +40,7 @@ export const authReducer = (state: AuthDataType = initialState, action: ActionsA
 
     }
 }
-export const setUserData = (id: null | number, email: null | string, login: null | string, isAuth: boolean) => ({
+export const setUserData = (id: string | null, email: null | string, login: null | string, isAuth: boolean) => ({
     type: SET_USER_DATA,
     data: {id, email, login, isAuth}
 } as const)
@@ -60,11 +62,17 @@ export const authThunkCreator = () => {
     }
 }
 export const loginThunkCreator = (email: string, password: string, rememberMe: boolean) => {
-    return (dispatch:ThunkDispatch<ReducerType, unknown, ActionsAuthType>) => {
+
+    return (dispatch:ThunkDispatch<ReducerType, unknown, ActionsAuthType | FormAction>) => {
         authAPI.loginMe(email, password, rememberMe).then(response => {
             if (response.data.resultCode === 0) {
                 dispatch(authThunkCreator())
             }
+            else {
+               let message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error";
+                dispatch(stopSubmit("login", {_error:message}))  // stopSubmit специальный action creator из
+                // redux-form, который стопает submitForm
+            } //
         });
     }
 }
@@ -81,5 +89,7 @@ export const loginOutThunkCreator = () => {
 export type ActionsAuthType =
     ReturnType<typeof setUserData> |
     ReturnType<typeof setLogin>
+
+
 
 
