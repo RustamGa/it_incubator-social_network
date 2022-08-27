@@ -50,9 +50,9 @@ export const setLogin = (email: string, password: string, rememberMe: boolean) =
     data: {email, password, rememberMe}
 } as const)
 
-export const authThunkCreator = () => {
+export const  authThunkCreator = () => {
     return (dispatch: (action: ActionsAuthType) => void) => {
-        authAPI.authMe().then(response => {
+        return authAPI.authMe().then(response => {
             if (response.data.resultCode === 0) {
                 let {id, email, login} = response.data.data
                 dispatch(setUserData(id, email, login, true))

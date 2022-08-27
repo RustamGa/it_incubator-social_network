@@ -40,7 +40,10 @@ class ProfileContainer extends React.Component<ProfileContainerPropsType> {
         debugger
         let userId = this.props.match.params.userId;
         if (!userId) {
-            userId = this.props.authorizedUserId as string // не могу понять почему ругается на тип, поставил утверждение типа
+            userId = this.props.authorizedUserId as string;// не могу понять почему ругается на тип, поставил утверждение типа
+            if (!userId){
+                this.props.history.push("/login")
+            }
         }
 
         this.props.getProfileThunkCreator(userId)

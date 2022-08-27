@@ -98,7 +98,7 @@ const mapStateToProps = (state: ReducerType): MapStatePropsType => { // возв
 }
 
 export default compose<React.ComponentType>(
-    withAuthRedirect,connect(mapStateToProps, {
+    connect(mapStateToProps, {
     unFollowThunkCreator,
     followThunkCreator,
     setCurrentPage,

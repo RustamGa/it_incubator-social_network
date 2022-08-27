@@ -9,7 +9,6 @@ type MapStatePropsType = { // тип initial state users
     isAuth: boolean
 }
 type MapDispatchPropsType = {
-    authThunkCreator: () => void
     loginOutThunkCreator:() => void
 }
 export type AuthPropsType = MapStatePropsType & MapDispatchPropsType
@@ -18,7 +17,7 @@ export type AuthPropsType = MapStatePropsType & MapDispatchPropsType
 class HeaderContainer extends React.Component<AuthPropsType> {
     componentDidMount() {// метод жизнего цикла компоненты которая вызывается только олин раз когда перересуется
         // компонента и передаем ей axios запрос
-        this.props.authThunkCreator()
+        // this.props.authThunkCreator()
     }
 
     render() {
@@ -35,6 +34,5 @@ const mapStateToProps = (state: ReducerType): MapStatePropsType => { // возв
         login: state.auth.login
     }
 }
-export default connect(mapStateToProps, {
-    authThunkCreator, loginOutThunkCreator
+export default connect(mapStateToProps, {loginOutThunkCreator
 })(HeaderContainer);
