@@ -3,6 +3,7 @@ import s from "./ProfileInfo.module.css"
 import {ProfileType} from "../../Redux/profile-reducer";
 import {Preloader} from "../../Coomman/Preloader";
 import { ProfileStatus } from "./ProfileStatus";
+import {ProfileStatusFC} from "./ProfileStatusFunctionalComponent";
 
 
 type ProfileInfoPropsType = {
@@ -95,7 +96,7 @@ export const ProfileInfo = (props: ProfileInfoPropsType) => {
                         </div> :
                         null}
                 </div>
-                <ProfileStatus status={props.status}
+                <ProfileStatusFC status={props.status}
                                upDateProfileStatusThunkCreator={props.upDateProfileStatusThunkCreator}
                 />
             </div>

@@ -1,7 +1,4 @@
 import React, {ChangeEvent} from "react";
-import s from "./ProfileInfo.module.css"
-import {PostsPageType, ProfileType} from "../../Redux/profile-reducer";
-import {Preloader} from "../../Coomman/Preloader";
 
 
 type ProfileStatusPropsType = {
