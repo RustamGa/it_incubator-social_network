@@ -1,7 +1,5 @@
 import React from "react";
-import {
-    ReducerType,
-} from "../Redux/redux-store";
+import {ReducerType,} from "../Redux/redux-store";
 import {connect} from "react-redux";
 import {
     followThunkCreator,
@@ -13,9 +11,15 @@ import {
 } from "../Redux/users-reducer";
 import {Users} from "./Users";
 import {Preloader} from "../Coomman/Preloader";
-import {usersAPI} from "../Api/api";
 import {compose} from "redux";
-import {withAuthRedirect} from "../../Hoc/WithAuthRedirect";
+import {
+    getCurrentPage,
+    getFollowingInProgress,
+    getIsFetching,
+    getPageSize,
+    getTotalUserCount,
+    getUsers
+} from "../Redux/user-selector";
 
 
 type MapStatePropsType = { // тип initial state users
@@ -88,12 +92,12 @@ class UsersContainer extends React.Component<UsersPropsType> {
 const mapStateToProps = (state: ReducerType): MapStatePropsType => { // возвращает частичку стейта,
     // которую мы достаем из reducer
     return {
-        usersPage: state.usersPage.users,
-        pageSize: state.usersPage.pageSize,
-        totalUsersCount: state.usersPage.totalUsersCount,
-        currentPage: state.usersPage.currentPage,
-        isFetching: state.usersPage.isFetching,
-        followingInProgress: state.usersPage.followingInProgress
+        usersPage:getUsers(state),
+        pageSize: getPageSize(state),
+        totalUsersCount: getTotalUserCount(state),
+        currentPage: getCurrentPage(state),
+        isFetching: getIsFetching(state),
+        followingInProgress: getFollowingInProgress(state)
     }
 }
 
