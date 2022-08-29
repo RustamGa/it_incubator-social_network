@@ -1,9 +1,8 @@
 import React from "react";
 import styles from "./users.module.css";
 import UserPhoto from '../../assets/imeges/images.jpg'
-import {followThunkCreator, UserType} from "../Redux/users-reducer";
+import {UserType} from "../Redux/users-reducer";
 import {NavLink} from "react-router-dom";
-import {usersAPI} from "../Api/api";
 
 type UsersPropsType = {
     users: Array<UserType>

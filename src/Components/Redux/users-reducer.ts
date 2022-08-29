@@ -34,7 +34,7 @@ let initialState: UsersPageType = {
     users: [],
     pageSize: 100,
     totalUsersCount: 0,
-    currentPage: 2,
+    currentPage: 1,
     isFetching: true,
     followingInProgress: []
 }
@@ -103,22 +103,27 @@ export const usersReducer = (state: UsersPageType = initialState, action: Action
 
     }
 }
+
 export const follow = (userID: number) => ({
     type: FOLLOW,
     id: userID
 } as const)
+
 export const unFollow = (userID: number) => ({
     type: UNFOLLOW,
     id: userID
 } as const)
+
 export const setUsers = (users: Array<UserType>) => ({
     type: SET_USERS,
     users: users
 } as const)
+
 export const setCurrentPage = (currentPage: number) => ({
     type: SET_CURRENT_PAGE,
     currentPage: currentPage
 } as const)
+
 export const setTotalUsersCount = (usersCount: number) => ({
     type: SET_TOTAL_USERS_COUNT,
     usersCount
@@ -136,12 +141,13 @@ export const setFollowingProgress = (userID: number, isFetching: boolean) => ({
 } as const)
 
 export const getUsersThunkCreator = (pageSize: number, currentPage: number) => {
-
     return (dispatch: (action: ActionsUsersPageType) => void) => {
+
         usersAPI.getUsers(pageSize, currentPage).then(data => {
             dispatch(setUsers(data.items));
             dispatch(setTotalUsersCount(data.totalCount));
             dispatch(setTogglePreloader(false));
+            dispatch(setCurrentPage(currentPage))
         })
     }
 }
