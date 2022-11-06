@@ -19,27 +19,26 @@ type UserPropsType = {
     followThunkCreator: (userId: number) => void
     unFollowThunkCreator: (userId: number) => void
 }
-export const User = (props:UserPropsType) => {
-    return <div key={props.user.id}>
+export const User = ({user,followingInProgress, unFollowThunkCreator, followThunkCreator }:UserPropsType) => {
+    return <div key={user.id}>
         <span>
             <div>
-                <NavLink to={'/profile/' + props.user.id}>
-                <img
-                    src={UserPhoto} className={styles.usersPhoto}/>
+                <NavLink to={'/profile/' + user.id}>
+                <img  src={UserPhoto} className={styles.usersPhoto}/>
                     </NavLink>
             </div>
             <div>
-                {props.user.followed ?
-                    <button disabled={props.followingInProgress.some(id => id === props.user.id)}
+                {user.followed ?
+                    <button disabled={followingInProgress.some(id => id === user.id)}
                             onClick={() => {
-                                props.unFollowThunkCreator(props.user.id)
+                                unFollowThunkCreator(user.id)
                             }}
 
                     >Follow
                     </button>
-                    : <button disabled={props.followingInProgress.some(id => id === props.user.id)}
+                    : <button disabled={followingInProgress.some(id => id === user.id)}
                               onClick={() => {
-                                  props.followThunkCreator(props.user.id)
+                                  followThunkCreator(user.id)
                               }}
                     >Unfollow
                     </button>}
@@ -47,8 +46,8 @@ export const User = (props:UserPropsType) => {
         </span>
             <span>
             <span>
-                <div>{props.user.name}</div>
-                <div>{props.user.status}</div>
+                <div>{user.name}</div>
+                <div>{user.status}</div>
             </span>
             <span>
                 <div>{"u.location.country"}</div>
