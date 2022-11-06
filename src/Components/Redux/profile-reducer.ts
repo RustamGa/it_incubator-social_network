@@ -40,6 +40,7 @@ let initialState: PostsPageType = {
     postData: [
         {id: 1, message: 'My first post', likesCount: 2},
         {id: 2, message: 'Yo', likesCount: 10},
+        {id: 2, message: 'I`ll be back!', likesCount: 10}
     ],
     profile: null,
     status: ""

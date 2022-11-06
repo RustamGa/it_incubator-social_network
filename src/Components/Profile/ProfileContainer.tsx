@@ -37,7 +37,6 @@ type ProfileContainerPropsType = RouteComponentProps<PathParamsType> & PropsType
 class ProfileContainer extends React.Component<ProfileContainerPropsType> {
 
     componentDidMount() {
-        debugger
         let userId = this.props.match.params.userId;
         if (!userId) {
             userId = this.props.authorizedUserId as string;// не могу понять почему ругается на тип, поставил утверждение типа
@@ -45,7 +44,6 @@ class ProfileContainer extends React.Component<ProfileContainerPropsType> {
                 this.props.history.push("/login")
             }
         }
-
         this.props.getProfileThunkCreator(userId)
         this.props.getProfileStatusThunkCreator(userId)
     }
