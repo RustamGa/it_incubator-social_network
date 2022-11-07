@@ -3,6 +3,7 @@ import {profileAPI, usersAPI} from "../Api/api";
 const ADD_POST = 'ADD-POST'
 const SET_PROFILE_INFO = 'SET_PROFILE_INFO'
 const SET_PROFILE_STATUS = 'SET-PROFILE-STATUS'
+const DELETE_POST = 'DELETE-POST'
 
 
 export type PostsType = {
@@ -51,12 +52,18 @@ export const profileReducer = (state: PostsPageType = initialState, action: Acti
     switch (action.type) {
         case ADD_POST: {
             let newPost: PostsType = {
-                id: 3,
+                id: 4,
                 message: action.postMessage,
                 likesCount: 10
             }
             return {
                 ...state, postData: [...state.postData, newPost]
+            }
+        }
+        case DELETE_POST:{
+            return {...state, postData: state.postData.filter((post)=>{
+                    return post.id!==action.id
+                })
             }
         }
         // case UPDATE_POST_TEXT: {
@@ -82,6 +89,11 @@ export const addPostTypeCreator = (newPostMessage:string) => ({
     type: ADD_POST,
     postMessage:newPostMessage
 
+} as const)
+
+export const deletePostAC = (postID:number) => ({
+    type: DELETE_POST,
+    id:postID
 } as const)
 
 // export const updateNewPostTextAC = (text: string) => ({
@@ -112,7 +124,6 @@ export const getProfileThunkCreator = (userId: string) => {
 export const getProfileStatusThunkCreator = (userId: string) => {
     return (dispatch: (action: ActionsProfileType) => void) => {
         profileAPI.getProfileStatus(userId)
-
             .then(response => {
                 dispatch(setProfileStatusAC(response.data));
             })
@@ -136,3 +147,4 @@ export type ActionsProfileType =
     // | ReturnType<typeof updateNewPostTextAC>
     | ReturnType<typeof setProfileInfoAC>
     | ReturnType<typeof setProfileStatusAC>
+    | ReturnType<typeof deletePostAC>
