@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-    addPostTypeCreator,
-    deletePostAC,
-    PostsPageType, PostsType,
-    profileReducer,
-    ProfileType,
-    setProfileInfoAC, setProfileStatusAC
-} from "./profile-reducer";
+import {addPostTypeCreator, deletePostAC, PostsPageType, profileReducer} from "./profile-reducer";
 
 let startState: PostsPageType = {
     postData: [],

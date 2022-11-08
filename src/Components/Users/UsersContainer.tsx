@@ -57,11 +57,14 @@ class UsersContainer extends React.Component<UsersPropsType> {
 
     componentDidMount() {// метод жизнего цикла компоненты которая вызывается только олин раз когда перересуется
         // компонента и передаем ей axios запрос
-        this.props.getUsersThunkCreator(this.props.pageSize, this.props.currentPage);
+
+        const {pageSize, currentPage} = this.props // деструкторизация пропсов ( прочитать Ден Абрамов почему так рекомендуется делать)
+        this.props.getUsersThunkCreator(pageSize, currentPage);
     }
 
     onPageChanged = (pageNumber: number) => {
-        this.props.getUsersThunkCreator(this.props.pageSize, pageNumber);
+        const {getUsersThunkCreator, pageSize}= this.props // деструкторизация пропсов ( прочитать Ден Абрамов почему так рекомендуется делать)
+        getUsersThunkCreator(pageSize, pageNumber);
     }
 
 // каждый класс должен определить метод render потому что react будет требовать от этого объекта получить jsx разметку

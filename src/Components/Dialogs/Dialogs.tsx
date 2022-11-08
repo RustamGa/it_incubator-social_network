@@ -5,7 +5,7 @@ import {DialogItem} from "./DialogsItem/DialogsItem";
 import {DialogsPropsType} from "./DialogsContainer";
 import {Field, InjectedFormProps, reduxForm} from "redux-form";
 import {Textarea} from "../Coomman/FormsControls/FormsControls";
-import {maxLengthCreator, required} from "../../Validators/Validators";
+import {maxLengthCreator, required} from "../../utils/Validators/Validators";
 
 
 type FormDataType = {

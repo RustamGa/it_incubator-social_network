@@ -1,7 +1,7 @@
 import React from 'react'
 import {Field, InjectedFormProps, reduxForm} from "redux-form";
 import {Input} from '../Coomman/FormsControls/FormsControls';
-import {required} from "../../Validators/Validators";
+import {required} from "../../utils/Validators/Validators";
 import {Redirect} from "react-router";
 import style from "./../Coomman/FormsControls/FormControl.module.css"
 

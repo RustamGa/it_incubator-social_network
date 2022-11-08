@@ -3,8 +3,8 @@ import {ThunkDispatch} from "redux-thunk";
 import {ReducerType} from "./redux-store";
 import {FormAction, stopSubmit} from "redux-form";
 
-const SET_USER_DATA = 'SET-USER-DATA'
-const SET_LOGIN = 'SET-LOGIN'
+const SET_USER_DATA = 'network/auth/SET-USER-DATA'
+const SET_LOGIN = 'network/auth/SET-LOGIN'
 
 
 export type AuthDataType = {
@@ -50,41 +50,39 @@ export const setLogin = (email: string, password: string, rememberMe: boolean) =
     data: {email, password, rememberMe}
 } as const)
 
-export const  authThunkCreator = () => {
-    return (dispatch: (action: ActionsAuthType) => void) => {
-        return authAPI.authMe().then(response => {
-            if (response.data.resultCode === 0) {
-                let {id, email, login} = response.data.data
-                dispatch(setUserData(id, email, login, true))
-            }
-        });
+export const authThunkCreator = () => {
+    return async (dispatch: (action: ActionsAuthType) => void) => {
+        let response = await authAPI.authMe()
+        if (response.data.resultCode === 0) {
+            let {id, email, login} = response.data.data
+            dispatch(setUserData(id, email, login, true))
+        }
+    };
 
-    }
 }
+
 export const loginThunkCreator = (email: string, password: string, rememberMe: boolean) => {
-
-    return (dispatch:ThunkDispatch<ReducerType, unknown, ActionsAuthType | FormAction>) => {
-        authAPI.loginMe(email, password, rememberMe).then(response => {
-            if (response.data.resultCode === 0) {
-                dispatch(authThunkCreator())
-            }
-            else {
-               let message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error";
-                dispatch(stopSubmit("login", {_error:message}))  // stopSubmit специальный action creator из
-                // redux-form, который стопает submitForm
-            } //
-        });
-    }
+    return async (dispatch: ThunkDispatch<ReducerType, unknown, ActionsAuthType | FormAction>) => {
+        let response = await authAPI.loginMe(email, password, rememberMe)
+        if (response.data.resultCode === 0) {
+            dispatch(authThunkCreator())
+        } else {
+            let message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error";
+            dispatch(stopSubmit("login", {_error: message}))  // stopSubmit специальный action creator из
+            // redux-form, который стопает submitForm
+        } //
+    };
 }
+
 export const loginOutThunkCreator = () => {
-    return (dispatch: (action: ActionsAuthType) => void) => {
-        authAPI.logOutMe().then(response => {
+    return async (dispatch: (action: ActionsAuthType) => void) => {
+        let response = await authAPI.logOutMe()
             if (response.data.resultCode === 0) {
                 dispatch(setUserData(null, null, null, false))
             }
-        });
+        };
     }
-}
+
 
 export type ActionsAuthType =
     ReturnType<typeof setUserData> |

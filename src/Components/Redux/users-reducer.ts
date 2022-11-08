@@ -1,4 +1,5 @@
 import {usersAPI} from "../Api/api";
+import {updateObjectArray} from "../../utils/object-helpers";
 
 const FOLLOW = 'FOLLOW'
 const UNFOLLOW = 'UNFOLLOW'
@@ -14,7 +15,6 @@ export type UserType = {
         small: string,
         large: string
     }
-
     followed: boolean,
     name: string
     status: string
@@ -40,34 +40,37 @@ let initialState: UsersPageType = {
 }
 
 
-export const usersReducer = (state: UsersPageType = initialState, action: ActionsUsersPageType): UsersPageType => {
+    export const usersReducer = (state: UsersPageType = initialState, action: ActionsUsersPageType): UsersPageType => {
     switch (action.type) {
         case FOLLOW:
-
             return {
                 ...state,
-                users: state.users.map((u) => {
-                    if (u.id === action.id) {
-                        return {
-                            ...u, followed: true
-                        }
-                    }
-                    return u;
-                })
+                users: updateObjectArray(state, action.id, 'id', {followed: true})
+                //     state.users.map((u) => {
+                //     if (u.id === action.id) {
+                //         return {
+                //             ...u, followed: true
+                //         }
+                //     }
+                //     return u;
+                // })
             };
         case
+
         UNFOLLOW:
             return {
                 ...state,
-                users: state.users.map((u) => {
-                        if (u.id === action.id) {
-                            return {
-                                ...u, followed: false
-                            }
-                        }
-                        return u;
-                    }
-                )
+                users:  updateObjectArray(state, action.id, 'id', {followed: false})
+
+                //     state.users.map((u) => {
+                //         if (u.id === action.id) {
+                //             return {
+                //                 ...u, followed: false
+                //             }
+                //         }
+                //         return u;
+                //     }
+                // )
             }
         case
         SET_USERS:
@@ -141,42 +144,35 @@ export const setFollowingProgress = (userID: number, isFetching: boolean) => ({
 } as const)
 
 export const getUsersThunkCreator = (pageSize: number, currentPage: number) => {
-    return (dispatch: (action: ActionsUsersPageType) => void) => {
-
-        usersAPI.getUsers(pageSize, currentPage).then(data => {
-            dispatch(setUsers(data.items));
-            dispatch(setTotalUsersCount(data.totalCount));
-            dispatch(setTogglePreloader(false));
-            dispatch(setCurrentPage(currentPage))
-        })
+    return async (dispatch: (action: ActionsUsersPageType) => void) => {
+        let response = await usersAPI.getUsers(pageSize, currentPage)
+        dispatch(setUsers(response.items));
+        dispatch(setTotalUsersCount(response.totalCount));
+        dispatch(setTogglePreloader(false));
+        dispatch(setCurrentPage(currentPage))
     }
 }
-//
-export const followThunkCreator = (userID: number) => {
-    return (dispatch: (action: ActionsUsersPageType) => void) => {
-        dispatch(setFollowingProgress(userID, true))
-        usersAPI.followUsers(userID)
-            .then(data => {
-                if (data.resultCode === 0) {
-                    dispatch(follow(userID))
-                }
-                dispatch(setFollowingProgress(userID, false))
-            });
+const followUnfollowFlow = async (dispatch: (action: ActionsUsersPageType) => void, userID: number, apiMethod: any, actionCreator: ActionsUsersPageType) => {
+    dispatch(setFollowingProgress(userID, true))
+    let response = await apiMethod
+    if (response.resultCode === 0) {
+        dispatch(actionCreator)
     }
+    dispatch(setFollowingProgress(userID, false)); // рефакторинг thunkCreator(followThunkCreator и unFollowThunkCreator),
+    // вынесли дублируемы код в отдельную функцию followUnfollowFlow
+}
+
+
+export const followThunkCreator = (userID: number) => {
+    let apiMethod = usersAPI.followUsers(userID)
+    let actionCreator = follow(userID)
+    return async (dispatch: (action: ActionsUsersPageType) => void) => followUnfollowFlow(dispatch, userID, apiMethod, actionCreator)
 }
 
 export const unFollowThunkCreator = (userID: number) => {
-    return (dispatch: (action: ActionsUsersPageType) => void) => {
-        dispatch(setFollowingProgress(userID, true))
-        usersAPI.UnFollowUsers(userID)
-            .then(data => {
-                if (data.resultCode === 0) {
-                    dispatch(unFollow(userID))
-                }
-                dispatch(setFollowingProgress(userID, false))
-            });
-
-    }
+    let apiMethod = usersAPI.UnFollowUsers(userID)
+    let actionCreator = unFollow(userID)
+    return async (dispatch: (action: ActionsUsersPageType) => void) => followUnfollowFlow(dispatch, userID, apiMethod, actionCreator)
 }
 
 

@@ -2,7 +2,7 @@ import {authAPI} from "../Api/api";
 import {authThunkCreator} from "./auth-reducer";
 import {TypedDispatch} from "./redux-store";
 
-const SET_INITIALIZED = 'SET-INITIALIZED'
+const SET_INITIALIZED = 'network/app/SET-INITIALIZED'
 
 
 export type InitializedType = {
@@ -33,7 +33,8 @@ export const setInitialized = () => ({
 
 export const appInitializedThunkCreator = () => {
     return (dispatch: TypedDispatch) => {
-        let promise = dispatch(authThunkCreator())
+        let promise = dispatch(authThunkCreator()) // для инициализации приложения нам необходимо подписаться на промис
+        // который возвращает authThunkCreator дожидаемся когда они зарезолвятся и диспатчим setInitialized
         Promise.all([promise]).then(() => {
             return dispatch(setInitialized())
         })
